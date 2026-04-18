@@ -200,9 +200,120 @@ function TradingJournal() {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
-      complete: (results) => {
-        const imported = results.data.map((row, idx) => {
+complete: (results) => {
+        const rows = results.data;
+        if (!rows || rows.length === 0) { alert('データが空です'); return; }
+
+        const headers = Object.keys(rows[0]).map(h => h.toLowerCase().replace(/\s/g, ''));
+
+        // === Bybit TransactionLog 判定 ===
+        const isBybit = headers.some(h => h === 'cashflow' || h === 'filledprice') && headers.some(h => h === 'action');
+
+        if (isBybit) {
+          // Bybit: OPEN/CLOSE をペアリング
+          const tradeRows = rows.filter(r => {
+            const action = (r['Action'] || '').toUpperCase();
+            const type = (r['Type'] || '').toUpperCase();
+            return (action === 'OPEN' || action === 'CLOSE') && (type === 'TRADE' || type === 'LIQUIDATION');
+          });
+
+          // 時系列昇順（古い順）にソート
+          tradeRows.sort((a, b) => new Date(a['Time']) - new Date(b['Time']));
+
+          // Contract ごとにポジションを追跡
+          const positions = {}; // { contract: { entries: [...], direction } }
+          const paired = [];
+
+          tradeRows.forEach(row => {
+            const contract = row['Contract'] || 'UNKNOWN';
+            const action = (row['Action'] || '').toUpperCase();
+            const dir = (row['Direction'] || '').toUpperCase(); // BUY or SELL
+            const qty = Math.abs(parseFloat(row['Quantity']) || 0);
+            const price = parseFloat(row['Filled Price']) || 0;
+            const fee = parseFloat(row['Fee Paid']) || 0;
+            const cashflow = parseFloat(row['Cash Flow']) || 0;
+            const time = row['Time'] || '';
+
+            if (action === 'OPEN') {
+              if (!positions[contract]) {
+                positions[contract] = { entries: [], direction: dir === 'BUY' ? 'long' : 'short', totalQty: 0, totalCost: 0, totalFee: 0, firstTime: time };
+              }
+              const pos = positions[contract];
+              pos.entries.push({ price, qty, time, fee });
+              pos.totalQty += qty;
+              pos.totalCost += price * qty;
+              pos.totalFee += Math.abs(fee);
+              if (!pos.firstTime) pos.firstTime = time;
+            } else if (action === 'CLOSE') {
+              const pos = positions[contract];
+              if (!pos || pos.totalQty <= 0) return;
+
+              const closeQty = Math.min(qty, pos.totalQty);
+              const avgEntry = pos.totalCost / pos.totalQty;
+              const closeFee = Math.abs(fee);
+              const pnl = cashflow - closeFee; // Cash Flow already includes P&L but not fee
+
+              paired.push({
+                symbol: contract,
+                direction: pos.direction,
+                entryPrice: parseFloat(avgEntry.toFixed(2)),
+                exitPrice: price,
+                size: closeQty,
+                pnl: parseFloat(pnl.toFixed(4)),
+                entryDate: pos.firstTime ? pos.firstTime.replace(' ', 'T').slice(0, 16) : '',
+                exitDate: time ? time.replace(' ', 'T').slice(0, 16) : '',
+                stopLoss: 0, takeProfit: 0,
+                entryReason: '', exitReason: '', lesson: '',
+                tags: [], chartImages: [],
+                source: 'bybit_csv',
+              });
+
+              // ポジション残量を更新
+              pos.totalQty -= closeQty;
+              pos.totalCost = pos.totalQty > 0 ? avgEntry * pos.totalQty : 0;
+              if (pos.totalQty <= 0) delete positions[contract];
+            }
+          });
+
+          if (paired.length === 0) { alert('有効なトレードが見つかりませんでした'); return; }
+
+          const withIds = paired.map((t, idx) => ({ ...t, id: `t_bybit_${Date.now()}_${idx}` }));
+          saveTrades([...trades, ...withIds]);
+          alert(`Bybit: ${withIds.length}件のトレードをインポートしました`);
+          return;
+        }
+
+        // === 既存: Bitget 等の汎用CSVパーサー ===
+        const imported = rows.map((row, idx) => {
           const getField = (keys) => {
+            for (const k of keys) {
+              for (const rowKey of Object.keys(row)) {
+                if (rowKey.toLowerCase().replace(/\s/g, '').includes(k.toLowerCase().replace(/\s/g, ''))) return row[rowKey];
+              }
+            }
+            return '';
+          };
+          const symbol = getField(['symbol', 'シンボル', 'contract', '銘柄']);
+          const side = getField(['side', 'direction', '方向', 'type']);
+          const entry = parseFloat(getField(['open', 'entry', 'エントリー', '建値'])) || 0;
+          const exit = parseFloat(getField(['close', 'exit', 'クローズ', '決済'])) || 0;
+          const size = parseFloat(getField(['size', 'amount', '数量', 'volume'])) || 0;
+          const pnl = parseFloat(getField(['pnl', 'profit', '損益', 'realized'])) || 0;
+          const openTime = getField(['opentime', '開始時刻', 'opened', 'entry time']);
+          const closeTime = getField(['closetime', '終了時刻', 'closed', 'exit time', 'close time']);
+          const direction = side.toLowerCase().includes('short') || side.toLowerCase().includes('sell') ? 'short' : 'long';
+          return {
+            id: `t_csv_${Date.now()}_${idx}`,
+            symbol: symbol || 'UNKNOWN', direction,
+            entryPrice: entry, exitPrice: exit, size, pnl,
+            entryDate: openTime ? new Date(openTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
+            exitDate: closeTime ? new Date(closeTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
+            stopLoss: 0, takeProfit: 0, entryReason: '', exitReason: '', lesson: '',
+            tags: [], chartImages: [], source: 'bitget_csv',
+          };
+        }).filter(t => t.entryPrice > 0);
+        saveTrades([...trades, ...imported]);
+        alert(`${imported.length}件のトレードをインポートしました`);
             for (const k of keys) {
               for (const rowKey of Object.keys(row)) {
                 if (rowKey.toLowerCase().replace(/\s/g, '').includes(k.toLowerCase().replace(/\s/g, ''))) return row[rowKey];
