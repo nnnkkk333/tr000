@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trade Journal">
+<meta name="theme-color" content="#09090b">
+<title>Trade Journal</title>
+
+<!-- Apple Touch Icon (inline SVG as data URI) -->
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALAAAACwCAYAAACvt+ReAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF0WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4xLWMwMDAgNzkuZWRhMmIzZiwgMjAyMS8xMS8xNC0xMjozMDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIvPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+IC0tPgAABhJJREFUeJzt3E1u4zgQBeAi+/7nzCoLwzBi2RJZxar3PiCLRLJEf6wf0t//+fn5dwH+qH+eXgDwDgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhU/z69gB2+//nz9BK2+e/Xr6eXwP9YgY9QfPcSYFAJMKgEGFQCDCoBBtXfr+/v76fXsMvS2uv0G+bptmeuDyz6eyuwFfioJf9tBbYCn+H0J/6M8yxX9PdWYJcAz9T98+2Kt/J1sHZ7/lBPu2kFbuv0k9ug02/+MnpA3+n0gUc1+K/u86/d3Z/cNsqfeA5p7fuLe5GPHH1l35pBZ7rpJNf/4u+8fA/AQaVJ3GndMpOrVtF9hHgE3pqPLI7YrwEnb5GtAqjj8ifrgM/xSt/c2CfPu/A9uP8H4N/twKnjPDqf+HuBt5k7fbcwPaxNmgb7U8C7Mfpn7Lbvp5puxDhU4OoU/f9DrhLq4OI69f78oWHhYz17bMr8B5Tr3Hn3vn4zD+u7t3K7DmLLy+/c6YhxMuc56Gfcuys7EPHMCiwjwCDyhMY+PDEHM+swDnNPfQc8/T+J2eeFJH7X1mB57o+p3VfVuATOuXuBPbJ15FnD/AZffLOLOzApxPgM/rknTn6l8AjwKDyBI45+pN3bHxr3e2bHXhvHlr8kQJ8RqfszMVn7NhdX50W/vUBpwEGlQC/h+Pl/Mbb/MBz/aF/7Z6Pb0qAz+i7h8QQPySdNGjxEuCT0n2FsAKf1F8+TA75E/4KMKi8Ap/U6HdsFY/oL63A7+GF+D08sQKfYWmfkpzyu/xYgc/olJ2Z+b4kY+1fvwtxlwCf0Sd3Zi0HfZJ3Rfj8W4HPaOqd2fGpbRkBPqnRn7z63vIfVuAzOmVnHv3p3Zi4hScO+OwKfEaffPI7F/s/VuAcph/kTDu7AnP/qXV6p+6cwzFHPcEnJMA51g6a+bE4p7dKJ++cdAT4jE7fmZse5FNfZJUAn9Hpe3PXFvZrBT6p03dm4k/9KT9WYCvwGR1yN068z4Pm+ZlYgc9o+n+g8Vu8cE/8sQKf0eg7c+JL0PGLa/9lBf4ePsevwGc09aBm2p22tgJbgU/q5LtzaJvjE68jzz7gFb/AIxLgMxp9cFd843h2T59V+P9YgXM4/dCW/sqrz9gKfEZTD2rqgzr6y/xYgXN4/eCe+P/y8TmN/MXfl5cv3/aJFTjH6Qd3x9/1dIwV+IxGPri7/k7n8dqfWoGtwDlG35mdr0V5+ckVmPvvrcBndPrO3PF6svDn1GkrcA6nH9xeQXM4Q4ABJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVAIMKgEGlQCDSoBBJcCgEmBQCTCoBBhUAgwqAQaVAINKgEElwKASYFAJMKgEGFQCDCoBBpUAg0qAQSXAoBJgUAkwqAQYVP8DBkPsGxHVm8AAAAAASUVORK5CYII=">
+
+<!-- Inline Web App Manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlRyYWRlIEpvdXJuYWwiLAogICJzaG9ydF9uYW1lIjogIlRKIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwOTA5MGIiLAogICJ0aGVtZV9jb2xvciI6ICIjMDkwOTBiIiwKICAiaWNvbnMiOiBbXQp9">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.9/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        mono: ["'JetBrains Mono'", "'Menlo'", "'SF Mono'", "monospace"],
+      },
+    },
+  },
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 0;
+    background: #09090b;
+    font-family: 'JetBrains Mono', 'Menlo', monospace;
+    overscroll-behavior: none;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  /* PWA standalone mode: add safe area padding */
+  @media all and (display-mode: standalone) {
+    body { padding-top: env(safe-area-inset-top); }
+  }
+  input, select, textarea { font-family: inherit; font-size: 16px !important; }
+  @media (min-width: 768px) {
+    input, select, textarea { font-size: inherit !important; }
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+// ============ Service Worker Registration (inline) ============
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'tj-cache-v1';
+    const URLS_TO_CACHE = ['.'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(URLS_TO_CACHE)));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(names => Promise.all(
+        names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))
+      )));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(r => r || fetch(e.request).catch(() => new Response('Offline')))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+}
+</script>
+
+<script type="text/babel" data-type="module">
+// ============ Icons (lightweight inline SVG icons) ============
+const Icon = ({ name, size = 14, className = '' }) => {
+  const s = { width: size, height: size };
+  const icons = {
+    'trending-up': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+    'trending-down': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>,
+    'upload': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>,
+    'plus': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+    'calendar': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+    'bar-chart': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+    'file-text': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+    'image': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+    'trash': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>,
+    'x': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    'edit': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+    'save': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>,
+    'filter': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+    'download': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+    'sparkles': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3z"/></svg>,
+    'activity': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+    'message': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+    'send': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+    'loader': <svg style={s} className={`${className} animate-spin`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>,
+    'alert-triangle': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+    'clock': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    'settings': <svg style={s} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+  };
+  return icons[name] || null;
+};
+
+// ============ LocalStorage wrapper ============
+const storage = {
+  get: (key) => {
+    try { const v = localStorage.getItem(`tj_${key}`); return v ? JSON.parse(v) : null; }
+    catch { return null; }
+  },
+  set: (key, value) => {
+    try { localStorage.setItem(`tj_${key}`, JSON.stringify(value)); }
+    catch(e) { console.error('Storage full', e); }
+  },
+};
+
+// ============ Main App ============
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+function TradingJournal() {
+  const [trades, setTrades] = useState([]);
+  const [weeklyReviews, setWeeklyReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showOcrModal, setShowOcrModal] = useState(false);
+  const [editingTrade, setEditingTrade] = useState(null);
+  const [selectedTrade, setSelectedTrade] = useState(null);
+  const [filterSymbol, setFilterSymbol] = useState('all');
+  const [filterDirection, setFilterDirection] = useState('all');
+  const [editingReview, setEditingReview] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const t = storage.get('trades');
+    if (t) setTrades(t);
+    const r = storage.get('reviews');
+    if (r) setWeeklyReviews(r);
+    setLoading(false);
+  }, []);
+
+  const saveTrades = (newTrades) => {
+    setTrades(newTrades);
+    storage.set('trades', newTrades);
+  };
+
+  const saveReviews = (newReviews) => {
+    setWeeklyReviews(newReviews);
+    storage.set('reviews', newReviews);
+  };
+
+  const handleSaveTrade = (trade) => {
+    let newTrades;
+    if (trade.id && trades.find(t => t.id === trade.id)) {
+      newTrades = trades.map(t => t.id === trade.id ? trade : t);
+    } else {
+      newTrades = [...trades, { ...trade, id: trade.id || `t_${Date.now()}_${Math.random().toString(36).slice(2, 7)}` }];
+    }
+    saveTrades(newTrades);
+    setShowAddModal(false);
+    setEditingTrade(null);
+  };
+
+  const handleSaveMultiple = (newEntries) => {
+    const withIds = newEntries.map(t => ({
+      ...t,
+      id: `t_ocr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    }));
+    saveTrades([...trades, ...withIds]);
+    setShowOcrModal(false);
+  };
+
+  const handleDeleteTrade = (id) => {
+    if (!confirm('このトレードを削除しますか?')) return;
+    saveTrades(trades.filter(t => t.id !== id));
+    setSelectedTrade(null);
+  };
+
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        const imported = results.data.map((row, idx) => {
+          const getField = (keys) => {
+            for (const k of keys) {
+              for (const rowKey of Object.keys(row)) {
+                if (rowKey.toLowerCase().replace(/\s/g, '').includes(k.toLowerCase().replace(/\s/g, ''))) return row[rowKey];
+              }
+            }
+            return '';
+          };
+          const symbol = getField(['symbol', 'シンボル', 'contract', '銘柄']);
+          const side = getField(['side', 'direction', '方向', 'type']);
+          const entry = parseFloat(getField(['open', 'entry', 'エントリー', '建値'])) || 0;
+          const exit = parseFloat(getField(['close', 'exit', 'クローズ', '決済'])) || 0;
+          const size = parseFloat(getField(['size', 'amount', '数量', 'volume'])) || 0;
+          const pnl = parseFloat(getField(['pnl', 'profit', '損益', 'realized'])) || 0;
+          const openTime = getField(['opentime', '開始時刻', 'opened', 'entry time']);
+          const closeTime = getField(['closetime', '終了時刻', 'closed', 'exit time', 'close time']);
+          const direction = side.toLowerCase().includes('short') || side.toLowerCase().includes('sell') ? 'short' : 'long';
+          return {
+            id: `t_csv_${Date.now()}_${idx}`,
+            symbol: symbol || 'UNKNOWN', direction,
+            entryPrice: entry, exitPrice: exit, size, pnl,
+            entryDate: openTime ? new Date(openTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
+            exitDate: closeTime ? new Date(closeTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
+            stopLoss: 0, takeProfit: 0, entryReason: '', exitReason: '', lesson: '',
+            tags: [], chartImages: [], source: 'bitget_csv',
+          };
+        }).filter(t => t.entryPrice > 0);
+        saveTrades([...trades, ...imported]);
+        alert(`${imported.length}件のトレードをインポートしました`);
+      },
+      error: (err) => alert('CSV読込エラー: ' + err.message),
+    });
+    e.target.value = '';
+  };
+
+  const filteredTrades = useMemo(() => {
+    return trades.filter(t => {
+      if (filterSymbol !== 'all' && t.symbol !== filterSymbol) return false;
+      if (filterDirection !== 'all' && t.direction !== filterDirection) return false;
+      return true;
+    }).sort((a, b) => new Date(b.exitDate || b.entryDate) - new Date(a.exitDate || a.entryDate));
+  }, [trades, filterSymbol, filterDirection]);
+
+  const stats = useMemo(() => {
+    if (filteredTrades.length === 0) return null;
+    const closed = filteredTrades.filter(t => t.exitPrice > 0);
+    const wins = closed.filter(t => t.pnl > 0);
+    const losses = closed.filter(t => t.pnl < 0);
+    const totalPnl = closed.reduce((s, t) => s + t.pnl, 0);
+    const avgWin = wins.length > 0 ? wins.reduce((s, t) => s + t.pnl, 0) / wins.length : 0;
+    const avgLoss = losses.length > 0 ? losses.reduce((s, t) => s + t.pnl, 0) / losses.length : 0;
+    const withR = closed.filter(t => t.stopLoss > 0 && t.entryPrice > 0);
+    const rMultiples = withR.map(t => {
+      const risk = Math.abs(t.entryPrice - t.stopLoss) * t.size;
+      return risk > 0 ? t.pnl / risk : 0;
+    });
+    const avgR = rMultiples.length > 0 ? rMultiples.reduce((s, r) => s + r, 0) / rMultiples.length : 0;
+    return {
+      total: closed.length, wins: wins.length, losses: losses.length,
+      winRate: closed.length > 0 ? (wins.length / closed.length * 100) : 0,
+      totalPnl, avgWin, avgLoss,
+      profitFactor: Math.abs(avgLoss) > 0 ? Math.abs(avgWin * wins.length / (avgLoss * losses.length)) : 0,
+      avgR,
+      bestTrade: closed.length > 0 ? Math.max(...closed.map(t => t.pnl)) : 0,
+      worstTrade: closed.length > 0 ? Math.min(...closed.map(t => t.pnl)) : 0,
+    };
+  }, [filteredTrades]);
+
+  const symbols = useMemo(() => [...new Set(trades.map(t => t.symbol))], [trades]);
+
+  const weekKey = (date) => {
+    const d = new Date(date);
+    const onejan = new Date(d.getFullYear(), 0, 1);
+    const weekNum = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+    return `${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+  };
+
+  const tradesByWeek = useMemo(() => {
+    const grouped = {};
+    filteredTrades.forEach(t => {
+      const k = weekKey(t.exitDate || t.entryDate);
+      if (!grouped[k]) grouped[k] = [];
+      grouped[k].push(t);
+    });
+    return grouped;
+  }, [filteredTrades]);
+
+  const handleExport = () => {
+    const csv = Papa.unparse(trades.map(t => {
+      const { chartImages, ...rest } = t;
+      return rest;
+    }));
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `trades_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-zinc-400 flex items-center justify-center font-mono">
+        <div className="text-sm tracking-wider">LOADING DATA...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-mono">
+      <header className="border-b border-zinc-800 bg-zinc-950 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-3 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+            <div>
+              <h1 className="text-xs font-bold tracking-[0.2em] text-zinc-100">TRADE JOURNAL</h1>
+              <p className="text-[9px] text-zinc-500 tracking-widest">FUTURES / CRYPTO</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button onClick={() => setShowOcrModal(true)}
+              className="px-2 py-1.5 text-[10px] border border-emerald-500/50 hover:border-emerald-400 text-emerald-400 transition flex items-center gap-1 bg-emerald-500/5">
+              <Icon name="sparkles" size={12} />
+              <span>貼付</span>
+            </button>
+            <button onClick={() => fileInputRef.current?.click()}
+              className="hidden md:flex px-2 py-1.5 text-[10px] border border-zinc-800 text-zinc-300 transition items-center gap-1">
+              <Icon name="upload" size={12} /> CSV
+            </button>
+            <input ref={fileInputRef} type="file" accept=".csv" onChange={handleCSVUpload} className="hidden" />
+            <button onClick={handleExport}
+              className="hidden md:flex px-2 py-1.5 text-[10px] border border-zinc-800 text-zinc-300 transition items-center gap-1">
+              <Icon name="download" size={12} /> 書出
+            </button>
+            <button onClick={() => setShowSettings(true)}
+              className="px-2 py-1.5 text-[10px] border border-zinc-800 text-zinc-400 transition md:hidden">
+              <Icon name="settings" size={13} />
+            </button>
+            <button onClick={() => { setEditingTrade(null); setShowAddModal(true); }}
+              className="px-2 py-1.5 text-[10px] bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold transition flex items-center gap-1">
+              <Icon name="plus" size={12} />
+              <span>新規</span>
+            </button>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-2 flex gap-0 border-t border-zinc-900 overflow-x-auto">
+          {[
+            { id: 'dashboard', label: 'DASH', icon: 'bar-chart' },
+            { id: 'trades', label: 'TRADES', icon: 'file-text' },
+            { id: 'analysis', label: 'ANALYSIS', icon: 'activity' },
+            { id: 'weekly', label: 'WEEKLY', icon: 'calendar' },
+            { id: 'coach', label: 'COACH', icon: 'message' },
+          ].map(tab => (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+              className={`px-3 py-2.5 text-[10px] tracking-wider flex items-center gap-1.5 border-b-2 transition whitespace-nowrap ${
+                activeTab === tab.id ? 'border-emerald-400 text-emerald-400' : 'border-transparent text-zinc-500'
+              }`}>
+              <Icon name={tab.icon} size={12} />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-3 py-4 pb-8">
+        {activeTab !== 'weekly' && activeTab !== 'coach' && (
+          <div className="flex flex-wrap gap-2 mb-4 items-center">
+            <Icon name="filter" size={12} className="text-zinc-500" />
+            <select value={filterSymbol} onChange={e => setFilterSymbol(e.target.value)}
+              className="bg-zinc-900 border border-zinc-800 px-2 py-1 text-[11px] text-zinc-300">
+              <option value="all">全シンボル</option>
+              {symbols.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <select value={filterDirection} onChange={e => setFilterDirection(e.target.value)}
+              className="bg-zinc-900 border border-zinc-800 px-2 py-1 text-[11px] text-zinc-300">
+              <option value="all">全方向</option>
+              <option value="long">ロング</option>
+              <option value="short">ショート</option>
+            </select>
+            <div className="text-[10px] text-zinc-500 ml-auto">{filteredTrades.length} 件</div>
+          </div>
+        )}
+        {activeTab === 'dashboard' && <Dashboard stats={stats} trades={filteredTrades} />}
+        {activeTab === 'trades' && <TradesList trades={filteredTrades} onSelect={setSelectedTrade}
+          onEdit={(t) => { setEditingTrade(t); setShowAddModal(true); }} onDelete={handleDeleteTrade} />}
+        {activeTab === 'analysis' && <AnalysisView trades={filteredTrades} />}
+        {activeTab === 'weekly' && <WeeklyReview tradesByWeek={tradesByWeek} reviews={weeklyReviews}
+          onSaveReview={(weekId, content) => {
+            const existing = weeklyReviews.find(r => r.weekId === weekId);
+            let newReviews;
+            if (existing) {
+              newReviews = weeklyReviews.map(r => r.weekId === weekId ? { ...r, content, updatedAt: new Date().toISOString() } : r);
+            } else {
+              newReviews = [...weeklyReviews, { weekId, content, updatedAt: new Date().toISOString() }];
+            }
+            saveReviews(newReviews);
+            setEditingReview(null);
+          }}
+          editingReview={editingReview} setEditingReview={setEditingReview} />}
+        {activeTab === 'coach' && <CoachView trades={trades} />}
+      </main>
+
+      {showAddModal && <TradeModal trade={editingTrade} onSave={handleSaveTrade}
+        onClose={() => { setShowAddModal(false); setEditingTrade(null); }} />}
+      {selectedTrade && <TradeDetailModal trade={selectedTrade} onClose={() => setSelectedTrade(null)}
+        onEdit={() => { setEditingTrade(selectedTrade); setSelectedTrade(null); setShowAddModal(true); }}
+        onDelete={() => handleDeleteTrade(selectedTrade.id)} />}
+      {showOcrModal && <OcrImportModal onClose={() => setShowOcrModal(false)} onSave={handleSaveMultiple} />}
+      {showSettings && <SettingsModal trades={trades} fileInputRef={fileInputRef}
+        onCSVUpload={handleCSVUpload} onExport={handleExport}
+        onClearAll={() => { if (confirm('全データを削除しますか？この操作は取り消せません。')) { saveTrades([]); saveReviews([]); } }}
+        onClose={() => setShowSettings(false)} />}
+    </div>
+  );
+}
+
+// ============ Settings Modal (mobile) ============
+function SettingsModal({ trades, onCSVUpload, onExport, onClearAll, onClose }) {
+  const fileRef = useRef(null);
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center" onClick={onClose}>
+      <div className="bg-zinc-950 border-t border-zinc-800 w-full max-w-lg p-5 space-y-3" onClick={e => e.stopPropagation()}>
+        <div className="text-xs tracking-widest text-zinc-400 mb-2">設定・データ管理</div>
+        <button onClick={() => fileRef.current?.click()}
+          className="w-full px-4 py-3 text-xs border border-zinc-800 text-zinc-300 flex items-center gap-2">
+          <Icon name="upload" size={14} /> CSVインポート
+        </button>
+        <input ref={fileRef} type="file" accept=".csv" onChange={(e) => { onCSVUpload(e); onClose(); }} className="hidden" />
+        <button onClick={() => { onExport(); onClose(); }}
+          className="w-full px-4 py-3 text-xs border border-zinc-800 text-zinc-300 flex items-center gap-2">
+          <Icon name="download" size={14} /> CSVエクスポート ({trades.length}件)
+        </button>
+        <button onClick={() => { onClearAll(); onClose(); }}
+          className="w-full px-4 py-3 text-xs border border-rose-500/30 text-rose-400 flex items-center gap-2">
+          <Icon name="trash" size={14} /> 全データ削除
+        </button>
+        <button onClick={onClose}
+          className="w-full px-4 py-2 text-xs text-zinc-500 mt-2">閉じる</button>
+      </div>
+    </div>
+  );
+}
+
+// ============ OCR Import Modal ============
+function OcrImportModal({ onClose, onSave }) {
+  const [inputText, setInputText] = useState('');
+  const [parseError, setParseError] = useState('');
+  const [extractedTrades, setExtractedTrades] = useState(null);
+
+  const parseBitgetText = (text) => {
+    if (!text || !text.trim()) throw new Error('テキストが空です');
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const startIndices = [];
+    lines.forEach((line, i) => {
+      if (/^[A-Z0-9]+USDT?-?$/i.test(line) || /^[A-Z0-9]+-$/.test(line)) startIndices.push(i);
+    });
+    if (startIndices.length === 0) throw new Error('ポジションの開始行(例: BTCUSDT-)が見つかりません');
+    const trades = [];
+    for (let idx = 0; idx < startIndices.length; idx++) {
+      const start = startIndices[idx];
+      const end = idx + 1 < startIndices.length ? startIndices[idx + 1] : lines.length;
+      try {
+        const trade = parseBlock(lines.slice(start, end));
+        if (trade) trades.push(trade);
+      } catch (e) { console.warn(`Parse fail ${idx}:`, e.message); }
+    }
+    if (trades.length === 0) throw new Error('有効なポジションが抽出できませんでした');
+    return trades;
+  };
+
+  const parseBlock = (block) => {
+    const symbolMatch = block[0].match(/^([A-Z0-9]+USDT?)/i);
+    const symbol = symbolMatch ? symbolMatch[1].toUpperCase() : 'UNKNOWN';
+    let direction='long',leverage=0,marginMode='',entryDate='',exitDate='',entryPrice=0,exitPrice=0,size=0,pnl=0,roi=0;
+    for (let i = 0; i < block.length; i++) {
+      const line = block[i], next = block[i+1] || '';
+      if (line === 'ロング' || line.includes('ロング')) direction = 'long';
+      if (line === 'ショート' || line.includes('ショート')) direction = 'short';
+      const levMatch = line.match(/(\d+(?:\.\d+)?)\s*x/i);
+      if (levMatch && leverage === 0) leverage = parseFloat(levMatch[1]);
+      if (line.includes('クロス')) marginMode = 'cross';
+      if (line.includes('分離')) marginMode = 'isolated';
+      if (line === '参入日時') entryDate = parseDate(next);
+      else if (line === '決済日時') exitDate = parseDate(next);
+      else if (line === '平均参入価格') entryPrice = parseNumber(next);
+      else if (line === '平均決済価格') exitPrice = parseNumber(next);
+      else if (line === '最大ポジションサイズ') size = parseNumber(next);
+      else if (line === '決済金額' && size === 0) size = parseNumber(next);
+      else if (line === 'ポジション損益額') pnl = parseNumber(next);
+      else if (line === 'ポジションROI') roi = parseNumber(next);
+    }
+    if (entryPrice === 0 && exitPrice === 0 && pnl === 0) return null;
+    return { symbol, direction, leverage, marginMode, entryPrice, exitPrice, size, pnl, roi,
+      entryDate, exitDate, stopLoss:0, takeProfit:0, entryReason:'', exitReason:'', lesson:'',
+      tags:[], chartImages:[], source:'bitget_text', _selected:true };
+  };
+
+  const parseNumber = (str) => {
+    if (!str) return 0;
+    const cleaned = String(str).replace(/,/g, '').replace(/[^\d.+-]/g, '');
+    const n = parseFloat(cleaned);
+    return isNaN(n) ? 0 : n;
+  };
+
+  const parseDate = (str) => {
+    if (!str) return '';
+    const m = str.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
+    if (m) return `${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}`;
+    return '';
+  };
+
+  const handleParse = () => {
+    setParseError('');
+    try { setExtractedTrades(parseBitgetText(inputText)); }
+    catch (e) { setParseError(e.message); }
+  };
+
+  const updateExtracted = (idx, field, value) => {
+    const updated = [...extractedTrades];
+    updated[idx] = { ...updated[idx], [field]: value };
+    setExtractedTrades(updated);
+  };
+
+  const toggleSelected = (idx) => {
+    const updated = [...extractedTrades];
+    updated[idx]._selected = !updated[idx]._selected;
+    setExtractedTrades(updated);
+  };
+
+  const confirmSave = () => {
+    const toSave = extractedTrades.filter(t => t._selected).map(t => { const { _selected, ...c } = t; return c; });
+    if (toSave.length === 0) { alert('保存対象を選択してください'); return; }
+    onSave(toSave);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center p-3 overflow-y-auto">
+      <div className="bg-zinc-950 border border-zinc-800 w-full max-w-4xl my-4">
+        <div className="flex items-center justify-between p-3 border-b border-zinc-800">
+          <div className="flex items-center gap-2">
+            <Icon name="sparkles" size={14} className="text-emerald-400" />
+            <h2 className="text-xs tracking-widest text-zinc-100">テキスト貼り付けで一括登録</h2>
+          </div>
+          <button onClick={onClose} className="text-zinc-500"><Icon name="x" size={16} /></button>
+        </div>
+
+        {!extractedTrades && (
+          <div className="p-4 space-y-4">
+            <div className="bg-emerald-500/5 border border-emerald-500/20 p-3 text-[11px] text-zinc-300 leading-relaxed">
+              <strong className="text-emerald-400">使い方:</strong> Bitgetの「ポジション履歴」→ 全選択 → コピー → 下に貼り付け
+            </div>
+            <textarea value={inputText} onChange={e => setInputText(e.target.value)}
+              placeholder="BTCUSDT-&#10;ロング&#10;· 90x&#10;..."
+              rows={10} className="w-full bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-100 resize-y focus:border-emerald-500 outline-none font-mono" />
+            <div className="flex items-center justify-between text-[10px] text-zinc-500">
+              <span>{inputText.length > 0 ? `${inputText.split('\n').length}行` : '空'}</span>
+              {inputText && <button onClick={() => setInputText('')} className="hover:text-rose-400">クリア</button>}
+            </div>
+            {parseError && <div className="bg-rose-500/10 border border-rose-500/30 p-2 text-[11px] text-rose-300">{parseError}</div>}
+            <div className="flex gap-2 justify-end">
+              <button onClick={onClose} className="px-3 py-1.5 border border-zinc-800 text-[11px] text-zinc-400">キャンセル</button>
+              <button onClick={handleParse} disabled={!inputText.trim()}
+                className="px-3 py-1.5 bg-emerald-500 text-zinc-950 text-[11px] font-bold disabled:opacity-40 flex items-center gap-1">
+                <Icon name="sparkles" size={12} /> 解析
+              </button>
+            </div>
+          </div>
+        )}
+
+        {extractedTrades && (
+          <div className="p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="text-xs text-zinc-400"><span className="text-emerald-400 font-bold">{extractedTrades.length}件</span> 検出</div>
+              <button onClick={() => setExtractedTrades(null)} className="text-[11px] text-zinc-500">← 戻る</button>
+            </div>
+            <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+              {extractedTrades.map((t, i) => (
+                <ExtractedTradeCard key={i} trade={t} onUpdate={(f, v) => updateExtracted(i, f, v)} onToggle={() => toggleSelected(i)} />
+              ))}
+            </div>
+            <div className="flex gap-2 justify-end pt-2 border-t border-zinc-800">
+              <button onClick={() => setExtractedTrades(null)} className="px-3 py-1.5 border border-zinc-800 text-[11px] text-zinc-400">戻る</button>
+              <button onClick={confirmSave}
+                className="px-3 py-1.5 bg-emerald-500 text-zinc-950 text-[11px] font-bold flex items-center gap-1">
+                <Icon name="save" size={12} /> 保存
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const smallInputCls = "w-full bg-zinc-950 border border-zinc-800 px-2 py-1 text-[11px] text-zinc-100 focus:border-emerald-500 outline-none";
+
+function ExtractedTradeCard({ trade, onUpdate, onToggle }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className={`border ${trade._selected ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-zinc-800 bg-zinc-900/30'}`}>
+      <div className="p-2.5 flex items-center gap-2">
+        <input type="checkbox" checked={trade._selected} onChange={onToggle} className="w-4 h-4 accent-emerald-500 flex-shrink-0" />
+        <div className="flex-1 min-w-0 flex flex-wrap items-center gap-1.5 text-[11px]">
+          <span className="font-bold text-zinc-100">{trade.symbol}</span>
+          <span className={`px-1 py-0.5 text-[9px] tracking-wider ${trade.direction === 'long' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+            {trade.direction.toUpperCase()}
+          </span>
+          {trade.leverage > 0 && <span className="text-[9px] text-zinc-500">{trade.leverage}x</span>}
+          <span className={`font-bold tabular-nums ${trade.pnl > 0 ? 'text-emerald-400' : trade.pnl < 0 ? 'text-rose-400' : 'text-zinc-500'}`}>
+            {trade.pnl > 0 ? '+' : ''}{trade.pnl.toFixed(2)}
+          </span>
+        </div>
+        <button onClick={() => setExpanded(!expanded)} className="text-[10px] text-zinc-500">{expanded ? '閉' : '編集'}</button>
+      </div>
+      {expanded && (
+        <div className="p-2.5 border-t border-zinc-800 grid grid-cols-2 md:grid-cols-3 gap-2">
+          {[['symbol','シンボル'],['direction','方向'],['size','数量'],['entryPrice','参入価格'],['exitPrice','決済価格'],['pnl','損益'],['stopLoss','SL'],['takeProfit','TP'],['leverage','レバレッジ']].map(([k,l]) => (
+            <div key={k}>
+              <div className="text-[9px] text-zinc-500 mb-0.5">{l}</div>
+              {k === 'direction' ? (
+                <select value={trade[k]} onChange={e => onUpdate(k, e.target.value)} className={smallInputCls}>
+                  <option value="long">ロング</option><option value="short">ショート</option>
+                </select>
+              ) : (
+                <input type={k === 'symbol' ? 'text' : 'number'} step="any" value={trade[k]}
+                  onChange={e => onUpdate(k, k === 'symbol' ? e.target.value.toUpperCase() : parseFloat(e.target.value) || 0)}
+                  className={smallInputCls} />
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SmallField({ label, children }) {
+  return <div><div className="text-[9px] text-zinc-500 tracking-wider mb-0.5">{label}</div>{children}</div>;
+}
+
+// ============ Dashboard ============
+function Dashboard({ stats, trades }) {
+  const cumulativeData = useMemo(() => {
+    const sorted = [...trades].filter(t => t.exitPrice > 0).sort((a, b) => new Date(a.exitDate) - new Date(b.exitDate));
+    let cum = 0;
+    return sorted.map(t => { cum += t.pnl; return { date: t.exitDate, pnl: cum }; });
+  }, [trades]);
+
+  if (!stats || stats.total === 0) {
+    return (
+      <div className="text-center py-16 text-zinc-500">
+        <Icon name="bar-chart" size={36} className="mx-auto mb-3 opacity-30" />
+        <p className="text-xs">まだトレード記録がありません</p>
+        <p className="text-[10px] mt-2 tracking-wider">「貼付」または「新規」から追加</p>
+      </div>
+    );
+  }
+
+  const maxCum = Math.max(...cumulativeData.map(d => d.pnl), 0);
+  const minCum = Math.min(...cumulativeData.map(d => d.pnl), 0);
+  const range = maxCum - minCum || 1;
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-800">
+        <Kpi label="総損益" value={stats.totalPnl.toFixed(2)} unit="USDT" highlight={stats.totalPnl >= 0 ? 'up' : 'down'} />
+        <Kpi label="勝率" value={stats.winRate.toFixed(1)} unit="%" />
+        <Kpi label="トレード数" value={stats.total} />
+        <Kpi label="PF" value={stats.profitFactor.toFixed(2)} />
+        <Kpi label="平均R" value={stats.avgR.toFixed(2)} unit="R" highlight={stats.avgR >= 0 ? 'up' : 'down'} />
+        <Kpi label="平均利益" value={stats.avgWin.toFixed(2)} unit="USDT" highlight="up" />
+        <Kpi label="平均損失" value={stats.avgLoss.toFixed(2)} unit="USDT" highlight="down" />
+        <Kpi label="最大利/損" value={`${stats.bestTrade.toFixed(0)}/${stats.worstTrade.toFixed(0)}`} />
+      </div>
+      {cumulativeData.length > 1 && (
+        <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+          <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">EQUITY CURVE</h3>
+          <div className="relative h-40">
+            <svg viewBox="0 0 1000 200" className="w-full h-full" preserveAspectRatio="none">
+              <line x1="0" x2="1000" y1={200-((0-minCum)/range)*180-10} y2={200-((0-minCum)/range)*180-10} stroke="#3f3f46" strokeWidth="1" strokeDasharray="4 4"/>
+              <path d={`M 0 ${200-((cumulativeData[0].pnl-minCum)/range)*180-10} ${cumulativeData.map((d,i) => {
+                const x=(i/(cumulativeData.length-1))*1000;const y=200-((d.pnl-minCum)/range)*180-10;return `L ${x} ${y}`;
+              }).join(' ')} L 1000 200 L 0 200 Z`} fill="url(#grad)" opacity="0.3"/>
+              <polyline points={cumulativeData.map((d,i) => {
+                const x=(i/(cumulativeData.length-1))*1000;const y=200-((d.pnl-minCum)/range)*180-10;return `${x},${y}`;
+              }).join(' ')} fill="none" stroke={stats.totalPnl>=0?'#34d399':'#f87171'} strokeWidth="1.5" vectorEffect="non-scaling-stroke"/>
+              <defs><linearGradient id="grad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor={stats.totalPnl>=0?'#34d399':'#f87171'}/>
+                <stop offset="100%" stopColor={stats.totalPnl>=0?'#34d399':'#f87171'} stopOpacity="0"/>
+              </linearGradient></defs>
+            </svg>
+            <div className="absolute top-0 right-0 text-[9px] text-zinc-500">{maxCum.toFixed(0)}</div>
+            <div className="absolute bottom-0 right-0 text-[9px] text-zinc-500">{minCum.toFixed(0)}</div>
+          </div>
+        </div>
+      )}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+          <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">直近20トレード</h3>
+          <div className="flex gap-0.5 items-end h-20">
+            {trades.slice(0, 20).reverse().map((t, i) => {
+              const h = Math.min(100, Math.abs(t.pnl) / Math.max(Math.abs(stats.bestTrade), Math.abs(stats.worstTrade)) * 100);
+              return <div key={i} className="flex-1 flex flex-col justify-end">
+                <div className={t.pnl >= 0 ? 'bg-emerald-500/60' : 'bg-rose-500/60'} style={{ height: `${h}%`, minHeight: '2px' }} title={`${t.symbol} ${t.pnl.toFixed(2)}`} />
+              </div>;
+            })}
+          </div>
+        </div>
+        <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+          <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">勝敗</h3>
+          <div className="space-y-2">
+            <StatRow label="勝ち" value={stats.wins} color="emerald" />
+            <StatRow label="負け" value={stats.losses} color="rose" />
+            <div className="h-2 bg-zinc-800 flex overflow-hidden">
+              <div className="bg-emerald-500" style={{ width: `${stats.winRate}%` }} />
+              <div className="bg-rose-500" style={{ width: `${100-stats.winRate}%` }} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Kpi({ label, value, unit, highlight }) {
+  const color = highlight === 'up' ? 'text-emerald-400' : highlight === 'down' ? 'text-rose-400' : 'text-zinc-100';
+  return (
+    <div className="bg-zinc-950 p-3">
+      <div className="text-[9px] text-zinc-500 tracking-[0.12em] mb-1">{label}</div>
+      <div className={`text-lg font-bold tabular-nums ${color}`}>
+        {value} {unit && <span className="text-[9px] text-zinc-500 font-normal ml-0.5">{unit}</span>}
+      </div>
+    </div>
+  );
+}
+
+function StatRow({ label, value, color }) {
+  return (
+    <div className="flex justify-between items-baseline">
+      <span className="text-[11px] text-zinc-400">{label}</span>
+      <span className={`text-base font-bold tabular-nums ${color === 'emerald' ? 'text-emerald-400' : 'text-rose-400'}`}>{value}</span>
+    </div>
+  );
+}
+
+// ============ Trades List ============
+function TradesList({ trades, onSelect, onEdit, onDelete }) {
+  if (trades.length === 0) return <div className="text-center py-16 text-zinc-500 text-xs">該当なし</div>;
+  return (
+    <div className="space-y-1">
+      {trades.map(t => (
+        <div key={t.id} onClick={() => onSelect(t)}
+          className="border border-zinc-800 bg-zinc-900/20 p-3 flex items-center gap-3 active:bg-zinc-800/50 cursor-pointer">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-zinc-100">{t.symbol}</span>
+              <span className={`px-1 py-0.5 text-[9px] tracking-wider ${t.direction === 'long' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                {t.direction.toUpperCase()}
+              </span>
+              {t.leverage > 0 && <span className="text-[9px] text-zinc-600">{t.leverage}x</span>}
+              {(t.source === 'ocr' || t.source === 'bitget_text') && <Icon name="sparkles" size={10} className="text-emerald-500/60" />}
+            </div>
+            <div className="text-[10px] text-zinc-500 tabular-nums">
+              {(t.exitDate || t.entryDate).replace('T', ' ').slice(0, 16)}
+              {t.entryPrice > 0 && <span className="ml-2">{t.entryPrice.toLocaleString()} → {t.exitPrice > 0 ? t.exitPrice.toLocaleString() : '-'}</span>}
+            </div>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <div className={`text-sm font-bold tabular-nums ${t.pnl > 0 ? 'text-emerald-400' : t.pnl < 0 ? 'text-rose-400' : 'text-zinc-500'}`}>
+              {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
+            </div>
+            {t.roi !== undefined && t.roi !== 0 && (
+              <div className={`text-[9px] tabular-nums ${t.roi > 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>
+                {t.roi > 0 ? '+' : ''}{t.roi.toFixed(1)}%
+              </div>
+            )}
+          </div>
+          <div className="flex gap-1.5 flex-shrink-0" onClick={e => e.stopPropagation()}>
+            <button onClick={() => onEdit(t)} className="text-zinc-600 active:text-emerald-400 p-1"><Icon name="edit" size={13} /></button>
+            <button onClick={() => onDelete(t.id)} className="text-zinc-600 active:text-rose-400 p-1"><Icon name="trash" size={13} /></button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============ Weekly Review ============
+function WeeklyReview({ tradesByWeek, reviews, onSaveReview, editingReview, setEditingReview }) {
+  const weekIds = Object.keys(tradesByWeek).sort().reverse();
+  if (weekIds.length === 0) return <div className="text-center py-16 text-zinc-500 text-xs">トレード記録がありません</div>;
+  return (
+    <div className="space-y-3">
+      {weekIds.map(wid => {
+        const weekTrades = tradesByWeek[wid];
+        const review = reviews.find(r => r.weekId === wid);
+        const pnl = weekTrades.reduce((s, t) => s + t.pnl, 0);
+        const wins = weekTrades.filter(t => t.pnl > 0).length;
+        const wr = weekTrades.length > 0 ? (wins / weekTrades.length * 100) : 0;
+        const isEditing = editingReview === wid;
+        return (
+          <div key={wid} className="border border-zinc-800 bg-zinc-900/30">
+            <div className="p-4 border-b border-zinc-800 flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <div className="text-[9px] text-zinc-500 tracking-widest">WEEK</div>
+                <div className="text-base font-bold text-zinc-100">{wid}</div>
+              </div>
+              <div className="flex gap-4 text-[11px]">
+                <div>
+                  <div className="text-[9px] text-zinc-500">損益</div>
+                  <div className={`font-bold tabular-nums ${pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{pnl > 0 ? '+' : ''}{pnl.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-[9px] text-zinc-500">勝率</div>
+                  <div className="font-bold text-zinc-100 tabular-nums">{wr.toFixed(0)}%</div>
+                </div>
+                <div>
+                  <div className="text-[9px] text-zinc-500">件数</div>
+                  <div className="font-bold text-zinc-100 tabular-nums">{weekTrades.length}</div>
+                </div>
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-[10px] tracking-widest text-zinc-400">レビュー</h4>
+                {!isEditing && <button onClick={() => setEditingReview(wid)} className="text-[10px] text-emerald-400 flex items-center gap-1"><Icon name="edit" size={10}/>編集</button>}
+              </div>
+              {isEditing ? <ReviewEditor initial={review?.content || ''} onSave={(c) => onSaveReview(wid, c)} onCancel={() => setEditingReview(null)} />
+                : <div className="text-[11px] text-zinc-300 whitespace-pre-wrap leading-relaxed">{review?.content || <span className="text-zinc-600 italic">レビューなし</span>}</div>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ReviewEditor({ initial, onSave, onCancel }) {
+  const [content, setContent] = useState(initial);
+  const template = `# パターン\n- \n\n# うまくいった点\n- \n\n# 改善点\n- \n\n# 次週の方針\n- `;
+  return (
+    <div className="space-y-2">
+      <textarea value={content} onChange={e => setContent(e.target.value)} placeholder={template}
+        rows={8} className="w-full bg-zinc-950 border border-zinc-800 p-3 text-[11px] text-zinc-100 leading-relaxed resize-y focus:border-emerald-500 outline-none" />
+      {!content && <button onClick={() => setContent(template)} className="text-[9px] text-zinc-500 hover:text-zinc-300">→ テンプレート挿入</button>}
+      <div className="flex gap-2">
+        <button onClick={() => onSave(content)} className="px-3 py-1.5 bg-emerald-500 text-zinc-950 text-[11px] font-bold flex items-center gap-1"><Icon name="save" size={11}/>保存</button>
+        <button onClick={onCancel} className="px-3 py-1.5 border border-zinc-800 text-[11px] text-zinc-400">キャンセル</button>
+      </div>
+    </div>
+  );
+}
+
+// ============ Trade Modal ============
+const inputCls = "w-full bg-zinc-900 border border-zinc-800 px-3 py-2 text-xs text-zinc-100 focus:border-emerald-500 outline-none";
+
+function Field({ label, children }) {
+  return <div><div className="text-[9px] text-zinc-500 tracking-[0.12em] mb-1">{label}</div>{children}</div>;
+}
+
+function TradeModal({ trade, onSave, onClose }) {
+  const [form, setForm] = useState(trade || {
+    symbol:'BTCUSDT', direction:'long', entryPrice:'', exitPrice:'', stopLoss:'', takeProfit:'',
+    size:'', pnl:'', entryDate:new Date().toISOString().slice(0,16), exitDate:'',
+    entryReason:'', exitReason:'', lesson:'', tags:[], chartImages:[]
+  });
+  const update = (k, v) => setForm(p => ({ ...p, [k]: v }));
+
+  const handleImageAdd = async (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = [];
+    for (const f of files) {
+      const reader = new FileReader();
+      await new Promise(resolve => {
+        reader.onload = () => { newImages.push({ name: f.name, data: reader.result }); resolve(); };
+        reader.readAsDataURL(f);
+      });
+    }
+    update('chartImages', [...(form.chartImages || []), ...newImages]);
+  };
+
+  useEffect(() => {
+    if (form.entryPrice && form.exitPrice && form.size) {
+      const entry = parseFloat(form.entryPrice), exit = parseFloat(form.exitPrice), size = parseFloat(form.size);
+      if (entry > 0 && exit > 0 && size > 0) {
+        const diff = form.direction === 'long' ? (exit - entry) : (entry - exit);
+        if (!form.pnl || form.pnl === '') update('pnl', (diff * size).toFixed(4));
+      }
+    }
+  }, [form.entryPrice, form.exitPrice, form.size, form.direction]);
+
+  const submit = () => {
+    onSave({
+      ...form,
+      entryPrice: parseFloat(form.entryPrice) || 0, exitPrice: parseFloat(form.exitPrice) || 0,
+      stopLoss: parseFloat(form.stopLoss) || 0, takeProfit: parseFloat(form.takeProfit) || 0,
+      size: parseFloat(form.size) || 0, pnl: parseFloat(form.pnl) || 0,
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center p-3 overflow-y-auto">
+      <div className="bg-zinc-950 border border-zinc-800 w-full max-w-3xl my-4">
+        <div className="flex items-center justify-between p-3 border-b border-zinc-800">
+          <h2 className="text-xs tracking-widest text-zinc-100">{trade ? '編集' : '新規追加'}</h2>
+          <button onClick={onClose} className="text-zinc-500"><Icon name="x" size={16} /></button>
+        </div>
+        <div className="p-4 space-y-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <Field label="シンボル"><input value={form.symbol} onChange={e => update('symbol', e.target.value.toUpperCase())} className={inputCls} /></Field>
+            <Field label="方向">
+              <select value={form.direction} onChange={e => update('direction', e.target.value)} className={inputCls}>
+                <option value="long">ロング</option><option value="short">ショート</option>
+              </select>
+            </Field>
+            <Field label="数量"><input type="number" step="any" value={form.size} onChange={e => update('size', e.target.value)} className={inputCls} /></Field>
+            <Field label="エントリー価格"><input type="number" step="any" value={form.entryPrice} onChange={e => update('entryPrice', e.target.value)} className={inputCls} /></Field>
+            <Field label="イグジット価格"><input type="number" step="any" value={form.exitPrice} onChange={e => update('exitPrice', e.target.value)} className={inputCls} /></Field>
+            <Field label="損益"><input type="number" step="any" value={form.pnl} onChange={e => update('pnl', e.target.value)} className={inputCls} /></Field>
+            <Field label="SL"><input type="number" step="any" value={form.stopLoss} onChange={e => update('stopLoss', e.target.value)} className={inputCls} /></Field>
+            <Field label="TP"><input type="number" step="any" value={form.takeProfit} onChange={e => update('takeProfit', e.target.value)} className={inputCls} /></Field>
+            <Field label="エントリー日時"><input type="datetime-local" value={form.entryDate} onChange={e => update('entryDate', e.target.value)} className={inputCls} /></Field>
+            <Field label="イグジット日時"><input type="datetime-local" value={form.exitDate} onChange={e => update('exitDate', e.target.value)} className={inputCls} /></Field>
+          </div>
+          <Field label="エントリー根拠"><textarea value={form.entryReason} onChange={e => update('entryReason', e.target.value)} rows={2} className={inputCls} /></Field>
+          <Field label="イグジット根拠"><textarea value={form.exitReason} onChange={e => update('exitReason', e.target.value)} rows={2} className={inputCls} /></Field>
+          <Field label="気づき"><textarea value={form.lesson} onChange={e => update('lesson', e.target.value)} rows={2} className={inputCls} /></Field>
+          <div>
+            <div className="text-[9px] text-zinc-500 mb-1">チャート画像</div>
+            <div className="flex flex-wrap gap-2">
+              {form.chartImages?.map((img, i) => (
+                <div key={i} className="relative">
+                  <img src={img.data} alt="" className="w-20 h-20 object-cover border border-zinc-800" />
+                  <button onClick={() => update('chartImages', form.chartImages.filter((_, j) => j !== i))}
+                    className="absolute -top-1 -right-1 bg-rose-500 text-zinc-950 rounded-full p-0.5"><Icon name="x" size={10}/></button>
+                </div>
+              ))}
+              <label className="w-20 h-20 border border-dashed border-zinc-700 flex flex-col items-center justify-center text-zinc-600 cursor-pointer">
+                <Icon name="image" size={16}/><span className="text-[9px] mt-1">追加</span>
+                <input type="file" accept="image/*" multiple onChange={handleImageAdd} className="hidden" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="p-3 border-t border-zinc-800 flex gap-2 justify-end">
+          <button onClick={onClose} className="px-3 py-1.5 border border-zinc-800 text-[11px] text-zinc-400">キャンセル</button>
+          <button onClick={submit} className="px-3 py-1.5 bg-emerald-500 text-zinc-950 text-[11px] font-bold">保存</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============ Trade Detail Modal ============
+function TradeDetailModal({ trade, onClose, onEdit, onDelete }) {
+  return (
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-start justify-center p-3 overflow-y-auto">
+      <div className="bg-zinc-950 border border-zinc-800 w-full max-w-3xl my-4">
+        <div className="flex items-center justify-between p-3 border-b border-zinc-800">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h2 className="text-xs tracking-widest text-zinc-100">{trade.symbol}</h2>
+            <span className={`px-1.5 py-0.5 text-[9px] tracking-wider ${trade.direction === 'long' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+              {trade.direction.toUpperCase()}
+            </span>
+          </div>
+          <div className="flex gap-1.5">
+            <button onClick={onEdit} className="text-zinc-500 p-1"><Icon name="edit" size={14}/></button>
+            <button onClick={onDelete} className="text-zinc-500 p-1"><Icon name="trash" size={14}/></button>
+            <button onClick={onClose} className="text-zinc-500 p-1"><Icon name="x" size={16}/></button>
+          </div>
+        </div>
+        <div className="p-4 space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+            <DetailCell label="損益" value={`${trade.pnl>0?'+':''}${trade.pnl?.toFixed(2)}`} color={trade.pnl>=0?'emerald':'rose'} />
+            {trade.roi !== undefined && trade.roi !== 0 && <DetailCell label="ROI" value={`${trade.roi>0?'+':''}${trade.roi.toFixed(2)}%`} color={trade.roi>=0?'emerald':'rose'} />}
+            <DetailCell label="エントリー" value={trade.entryPrice?.toLocaleString()} />
+            <DetailCell label="イグジット" value={trade.exitPrice>0?trade.exitPrice.toLocaleString():'-'} />
+            <DetailCell label="数量" value={trade.size} />
+            {trade.leverage > 0 && <DetailCell label="レバレッジ" value={`${trade.leverage}x`} />}
+            <DetailCell label="SL" value={trade.stopLoss>0?trade.stopLoss.toLocaleString():'-'} />
+            <DetailCell label="TP" value={trade.takeProfit>0?trade.takeProfit.toLocaleString():'-'} />
+            <DetailCell label="エントリー日時" value={trade.entryDate?.replace('T',' ')} />
+            <DetailCell label="イグジット日時" value={trade.exitDate?.replace('T',' ') || '-'} />
+          </div>
+          {trade.entryReason && <Section title="エントリー根拠">{trade.entryReason}</Section>}
+          {trade.exitReason && <Section title="イグジット根拠">{trade.exitReason}</Section>}
+          {trade.lesson && <Section title="気づき">{trade.lesson}</Section>}
+          {trade.chartImages && trade.chartImages.length > 0 && (
+            <div>
+              <div className="text-[9px] text-zinc-500 mb-1">チャート画像</div>
+              <div className="grid grid-cols-2 gap-2">
+                {trade.chartImages.map((img, i) => <img key={i} src={img.data} alt="" className="w-full h-32 object-cover border border-zinc-800" />)}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DetailCell({ label, value, color }) {
+  const cls = color === 'emerald' ? 'text-emerald-400' : color === 'rose' ? 'text-rose-400' : 'text-zinc-100';
+  return (
+    <div className="bg-zinc-900/50 p-2.5">
+      <div className="text-[9px] text-zinc-500 tracking-[0.12em] mb-0.5">{label}</div>
+      <div className={`font-bold tabular-nums text-xs ${cls}`}>{value}</div>
+    </div>
+  );
+}
+
+function Section({ title, children }) {
+  return (
+    <div className="border-l-2 border-zinc-800 pl-3">
+      <div className="text-[9px] text-zinc-500 tracking-[0.12em] mb-0.5">{title}</div>
+      <div className="text-[11px] text-zinc-300 whitespace-pre-wrap leading-relaxed">{children}</div>
+    </div>
+  );
+}
+
+// ============ Analysis View ============
+function AnalysisView({ trades }) {
+  const closedTrades = useMemo(() => trades.filter(t => t.exitPrice > 0 && t.exitDate), [trades]);
+  if (closedTrades.length < 3) {
+    return (
+      <div className="text-center py-16 text-zinc-500">
+        <Icon name="activity" size={36} className="mx-auto mb-3 opacity-30" />
+        <p className="text-xs">分析には最低3件のトレードが必要です</p>
+        <p className="text-[10px] mt-1">現在 {closedTrades.length} 件</p>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-4">
+      <HourlyHeatmap trades={closedTrades} />
+      <WeekdayAnalysis trades={closedTrades} />
+      <StreakTracker trades={closedTrades} />
+      <HoldTimeAnalysis trades={closedTrades} />
+      <PriceRangeAnalysis trades={closedTrades} />
+    </div>
+  );
+}
+
+function HourlyHeatmap({ trades }) {
+  const data = useMemo(() => {
+    const buckets = Array.from({ length: 24 }, () => ({ count: 0, wins: 0, pnl: 0 }));
+    trades.forEach(t => {
+      const h = new Date(t.entryDate || t.exitDate).getHours();
+      if (!isNaN(h)) { buckets[h].count += 1; if (t.pnl > 0) buckets[h].wins += 1; buckets[h].pnl += t.pnl; }
+    });
+    return buckets;
+  }, [trades]);
+  const maxCount = Math.max(...data.map(d => d.count), 1);
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">時間帯別</h3>
+      <div className="grid grid-cols-8 md:grid-cols-12 gap-1">
+        {data.map((b, hour) => {
+          const intensity = b.count > 0 ? Math.max(0.15, b.count / maxCount) : 0;
+          const color = b.count === 0 ? 'rgba(39,39,42,0.3)' : b.pnl > 0 ? `rgba(52,211,153,${intensity})` : b.pnl < 0 ? `rgba(248,113,113,${intensity})` : `rgba(113,113,122,${intensity})`;
+          return (
+            <div key={hour} className="aspect-square border border-zinc-800 flex flex-col items-center justify-center text-[8px] tabular-nums" style={{ backgroundColor: color }}
+              title={`${hour}時: ${b.count}件`}>
+              <div className="text-zinc-400">{hour}</div>
+              {b.count > 0 && <div className="font-bold text-zinc-100">{b.count}</div>}
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex gap-3 mt-2 text-[9px] text-zinc-500">
+        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-emerald-500/60"></span>勝ち</span>
+        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-rose-500/60"></span>負け</span>
+      </div>
+    </div>
+  );
+}
+
+function WeekdayAnalysis({ trades }) {
+  const days = ['日','月','火','水','木','金','土'];
+  const data = useMemo(() => {
+    const buckets = Array.from({ length: 7 }, () => ({ count:0, wins:0, pnl:0 }));
+    trades.forEach(t => {
+      const d = new Date(t.entryDate || t.exitDate).getDay();
+      if (!isNaN(d)) { buckets[d].count+=1; if(t.pnl>0)buckets[d].wins+=1; buckets[d].pnl+=t.pnl; }
+    });
+    return buckets;
+  }, [trades]);
+  const maxAbsPnl = Math.max(...data.map(d => Math.abs(d.pnl)), 1);
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">曜日別</h3>
+      <div className="grid grid-cols-7 gap-1.5">
+        {data.map((b, i) => {
+          const wr = b.count > 0 ? (b.wins / b.count * 100) : 0;
+          const h = (Math.abs(b.pnl) / maxAbsPnl) * 100;
+          return (
+            <div key={i} className="flex flex-col items-center">
+              <div className="text-[9px] text-zinc-500 mb-1">{days[i]}</div>
+              <div className="w-full h-16 flex flex-col justify-end mb-1">
+                {b.count > 0 && <div className={b.pnl >= 0 ? 'bg-emerald-500/60' : 'bg-rose-500/60'} style={{ height: `${h}%`, minHeight: '2px' }} />}
+              </div>
+              <div className={`text-[9px] font-bold tabular-nums ${b.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{b.pnl > 0 ? '+' : ''}{b.pnl.toFixed(1)}</div>
+              <div className="text-[8px] text-zinc-500 tabular-nums">{b.count}件</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StreakTracker({ trades }) {
+  const analysis = useMemo(() => {
+    const sorted = [...trades].sort((a, b) => new Date(a.exitDate) - new Date(b.exitDate));
+    const sequence = sorted.map(t => ({ result: t.pnl > 0 ? 'W' : 'L', pnl: t.pnl }));
+    let currentStreak = 0, currentType = null;
+    const streaks = [];
+    sequence.forEach((s, i) => {
+      if (s.result === currentType) { currentStreak += 1; }
+      else { if (currentStreak > 0) streaks.push({ type: currentType, length: currentStreak }); currentType = s.result; currentStreak = 1; }
+    });
+    if (currentStreak > 0) streaks.push({ type: currentType, length: currentStreak });
+    const maxWinStreak = Math.max(0, ...streaks.filter(s => s.type === 'W').map(s => s.length));
+    const maxLoseStreak = Math.max(0, ...streaks.filter(s => s.type === 'L').map(s => s.length));
+    let afterLoss2 = { count:0, wins:0, pnl:0 };
+    let afterWin2 = { count:0, wins:0, pnl:0 };
+    sequence.forEach((s, i) => {
+      if (i < 2) return;
+      if (sequence[i-1].result === 'L' && sequence[i-2].result === 'L') {
+        afterLoss2.count+=1; if(s.result==='W')afterLoss2.wins+=1; afterLoss2.pnl+=s.pnl;
+      }
+      if (sequence[i-1].result === 'W' && sequence[i-2].result === 'W') {
+        afterWin2.count+=1; if(s.result==='W')afterWin2.wins+=1; afterWin2.pnl+=s.pnl;
+      }
+    });
+    return { sequence, maxWinStreak, maxLoseStreak, afterLoss2, afterWin2 };
+  }, [trades]);
+  const tiltWarning = analysis.afterLoss2.count >= 2 && (analysis.afterLoss2.wins / analysis.afterLoss2.count) < 0.4;
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">連勝・連敗</h3>
+      <div className="mb-3">
+        <div className="flex flex-wrap gap-0.5">
+          {analysis.sequence.slice(-60).map((s, i) => (
+            <div key={i} className={`w-2.5 h-5 ${s.result === 'W' ? 'bg-emerald-500/70' : 'bg-rose-500/70'}`} />
+          ))}
+        </div>
+        {analysis.sequence.length > 60 && <div className="text-[8px] text-zinc-600 mt-1">直近60件</div>}
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+        <MiniStat label="最大連勝" value={analysis.maxWinStreak} color="emerald" />
+        <MiniStat label="最大連敗" value={analysis.maxLoseStreak} color="rose" />
+        <MiniStat label="2連敗後勝率" value={analysis.afterLoss2.count > 0 ? `${(analysis.afterLoss2.wins/analysis.afterLoss2.count*100).toFixed(0)}%` : '-'}
+          color={analysis.afterLoss2.count > 0 && (analysis.afterLoss2.wins/analysis.afterLoss2.count) >= 0.5 ? 'emerald' : 'rose'} sub={`${analysis.afterLoss2.count}件中`} />
+        <MiniStat label="2連勝後勝率" value={analysis.afterWin2.count > 0 ? `${(analysis.afterWin2.wins/analysis.afterWin2.count*100).toFixed(0)}%` : '-'}
+          color={analysis.afterWin2.count > 0 && (analysis.afterWin2.wins/analysis.afterWin2.count) >= 0.5 ? 'emerald' : 'rose'} sub={`${analysis.afterWin2.count}件中`} />
+      </div>
+      {tiltWarning && (
+        <div className="bg-amber-500/10 border border-amber-500/30 p-2.5 flex items-start gap-2 text-[11px] text-amber-200">
+          <Icon name="alert-triangle" size={13} className="flex-shrink-0 mt-0.5 text-amber-400" />
+          <div><strong>ティルト警告:</strong> 2連敗後の勝率が低下しています。離席を検討してください。</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MiniStat({ label, value, color, sub }) {
+  const cls = color === 'emerald' ? 'text-emerald-400' : color === 'rose' ? 'text-rose-400' : 'text-zinc-100';
+  return (
+    <div className="bg-zinc-950/50 p-2.5">
+      <div className="text-[9px] text-zinc-500 tracking-wider mb-0.5">{label}</div>
+      <div className={`text-base font-bold tabular-nums ${cls}`}>{value}</div>
+      {sub && <div className="text-[8px] text-zinc-500 mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+function HoldTimeAnalysis({ trades }) {
+  const data = useMemo(() => {
+    const withHold = trades.map(t => {
+      if (!t.entryDate || !t.exitDate) return null;
+      const minutes = (new Date(t.exitDate) - new Date(t.entryDate)) / 60000;
+      if (minutes < 0 || isNaN(minutes)) return null;
+      return { ...t, holdMinutes: minutes };
+    }).filter(Boolean);
+    const buckets = [
+      { label: '~15分', min:0, max:15, count:0, wins:0, pnl:0 },
+      { label: '15-60分', min:15, max:60, count:0, wins:0, pnl:0 },
+      { label: '1-4h', min:60, max:240, count:0, wins:0, pnl:0 },
+      { label: '4-24h', min:240, max:1440, count:0, wins:0, pnl:0 },
+      { label: '24h~', min:1440, max:Infinity, count:0, wins:0, pnl:0 },
+    ];
+    withHold.forEach(t => {
+      const b = buckets.find(b => t.holdMinutes >= b.min && t.holdMinutes < b.max);
+      if (b) { b.count+=1; if(t.pnl>0)b.wins+=1; b.pnl+=t.pnl; }
+    });
+    const avgHold = withHold.length > 0 ? withHold.reduce((s,t) => s+t.holdMinutes,0)/withHold.length : 0;
+    return { buckets, avgHold };
+  }, [trades]);
+  const maxPnl = Math.max(...data.buckets.map(b => Math.abs(b.pnl)), 1);
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-1">
+        <h3 className="text-[10px] tracking-widest text-zinc-400">保持時間と損益</h3>
+        <div className="text-[9px] text-zinc-500">
+          平均: <span className="text-zinc-300 font-bold">{data.avgHold < 60 ? `${data.avgHold.toFixed(0)}分` : `${(data.avgHold/60).toFixed(1)}h`}</span>
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        {data.buckets.map((b, i) => {
+          const wr = b.count > 0 ? (b.wins/b.count*100) : 0;
+          const w = (Math.abs(b.pnl)/maxPnl)*100;
+          return (
+            <div key={i} className="flex items-center gap-2 text-[10px]">
+              <div className="w-14 text-zinc-500 text-[9px]">{b.label}</div>
+              <div className="flex-1 bg-zinc-950 h-5 relative">
+                {b.count > 0 && <div className={`h-full ${b.pnl>=0?'bg-emerald-500/50':'bg-rose-500/50'}`} style={{ width: `${w}%` }} />}
+                <div className="absolute inset-0 flex items-center px-1.5 text-[9px] text-zinc-200 font-bold tabular-nums">
+                  {b.count > 0 ? `${b.count}件 / ${wr.toFixed(0)}%` : '-'}
+                </div>
+              </div>
+              <div className={`w-16 text-right font-bold tabular-nums ${b.pnl>=0?'text-emerald-400':'text-rose-400'}`}>{b.pnl>0?'+':''}{b.pnl.toFixed(1)}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PriceRangeAnalysis({ trades }) {
+  const bySymbol = useMemo(() => {
+    const groups = {};
+    trades.forEach(t => { if (!groups[t.symbol]) groups[t.symbol] = []; groups[t.symbol].push(t); });
+    const result = {};
+    Object.entries(groups).forEach(([symbol, ts]) => {
+      if (ts.length < 3) return;
+      const prices = ts.map(t => t.entryPrice).filter(p => p > 0);
+      if (prices.length === 0) return;
+      const min = Math.min(...prices), max = Math.max(...prices);
+      if (min === max) return;
+      const step = (max - min) / 5;
+      const buckets = Array.from({ length: 5 }, (_, i) => ({ rangeMin: min+step*i, rangeMax: min+step*(i+1), count:0, wins:0, pnl:0 }));
+      ts.forEach(t => {
+        if (t.entryPrice <= 0) return;
+        const idx = Math.min(4, Math.floor((t.entryPrice - min) / step));
+        buckets[idx].count+=1; if(t.pnl>0)buckets[idx].wins+=1; buckets[idx].pnl+=t.pnl;
+      });
+      result[symbol] = buckets;
+    });
+    return result;
+  }, [trades]);
+  const syms = Object.keys(bySymbol);
+  if (syms.length === 0) return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-2">価格帯別勝率</h3>
+      <div className="text-[10px] text-zinc-500 text-center py-3">同一シンボル3件以上必要</div>
+    </div>
+  );
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-3">価格帯別勝率</h3>
+      <div className="space-y-4">
+        {syms.map(sym => {
+          const buckets = bySymbol[sym];
+          const maxCount = Math.max(...buckets.map(b => b.count), 1);
+          return (
+            <div key={sym}>
+              <div className="text-[11px] text-zinc-300 font-bold mb-1.5">{sym}</div>
+              <div className="grid grid-cols-5 gap-1">
+                {buckets.map((b, i) => {
+                  const wr = b.count > 0 ? (b.wins/b.count*100) : 0;
+                  const intensity = b.count > 0 ? Math.max(0.2, b.count/maxCount) : 0;
+                  const color = b.count === 0 ? 'rgba(39,39,42,0.3)' : b.pnl > 0 ? `rgba(52,211,153,${intensity})` : `rgba(248,113,113,${intensity})`;
+                  return (
+                    <div key={i} className="border border-zinc-800 p-1.5 text-[9px]" style={{ backgroundColor: color }}>
+                      <div className="text-zinc-300 font-bold tabular-nums">{b.rangeMin.toFixed(0)}-{b.rangeMax.toFixed(0)}</div>
+                      {b.count > 0 ? <>
+                        <div className="text-zinc-400">{b.count}件</div>
+                        <div className="text-zinc-100 font-bold">{wr.toFixed(0)}%</div>
+                      </> : <div className="text-zinc-600">-</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ============ Coach View (AI Chat) ============
+function CoachView({ trades }) {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [attachedImages, setAttachedImages] = useState([]);
+  const [error, setError] = useState('');
+  const [apiKey, setApiKey] = useState(() => storage.get('apiKey') || '');
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const scrollRef = useRef(null);
+  const imageInputRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [messages, loading]);
+
+  const handleImageAttach = async (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = [];
+    for (const f of files) {
+      try {
+        const resized = await resizeImageForChat(f, 1568);
+        newImages.push(resized);
+      } catch (err) { console.error(err); }
+    }
+    setAttachedImages([...attachedImages, ...newImages]);
+    e.target.value = '';
+  };
+
+  const resizeImageForChat = (file, maxSide) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxSide || height > maxSide) {
+          if (width > height) { height = Math.round(height*(maxSide/width)); width = maxSide; }
+          else { width = Math.round(width*(maxSide/height)); height = maxSide; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        resolve({ name: file.name, data: dataUrl.split(',')[1], mediaType: 'image/jpeg', preview: dataUrl });
+      };
+      img.onerror = () => reject(new Error('image load failed'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('file read failed'));
+    reader.readAsDataURL(file);
+  });
+
+  const buildTradeContext = () => {
+    const closed = trades.filter(t => t.exitPrice > 0);
+    if (closed.length === 0) return '(まだトレード記録がありません)';
+    const wins = closed.filter(t => t.pnl > 0);
+    const totalPnl = closed.reduce((s, t) => s + t.pnl, 0);
+    const sorted = [...closed].sort((a, b) => new Date(b.exitDate) - new Date(a.exitDate));
+    return JSON.stringify({
+      totalTrades: closed.length,
+      winRate: (wins.length / closed.length * 100).toFixed(1),
+      totalPnl: totalPnl.toFixed(2),
+      avgWin: wins.length > 0 ? (wins.reduce((s,t) => s+t.pnl,0)/wins.length).toFixed(2) : 0,
+      avgLoss: (closed.length - wins.length) > 0 ? (closed.filter(t => t.pnl < 0).reduce((s,t) => s+t.pnl,0)/(closed.length-wins.length)).toFixed(2) : 0,
+      recent: sorted.slice(0, 15).map(t => ({
+        symbol:t.symbol, direction:t.direction, entryPrice:t.entryPrice, exitPrice:t.exitPrice,
+        pnl:t.pnl, roi:t.roi, entryDate:t.entryDate, exitDate:t.exitDate, leverage:t.leverage,
+        entryReason:t.entryReason, exitReason:t.exitReason, lesson:t.lesson,
+      })),
+    }, null, 2);
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim() && attachedImages.length === 0) return;
+    if (loading) return;
+    if (!apiKey) { setShowKeyInput(true); return; }
+
+    const userMsg = { role: 'user', text: input, images: attachedImages };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setInput(''); setAttachedImages([]); setLoading(true); setError('');
+
+    try {
+      const apiMessages = [];
+      const contextPrefix = messages.length === 0
+        ? `以下は私のトレード履歴の統計データです。\n\n${buildTradeContext()}\n\n---\n\n` : '';
+
+      newMessages.forEach((m, idx) => {
+        const isFirstUser = idx === 0 && m.role === 'user';
+        const content = [];
+        if (m.images && m.images.length > 0) {
+          m.images.forEach(img => content.push({ type: 'image', source: { type: 'base64', media_type: img.mediaType, data: img.data } }));
+        }
+        const textContent = isFirstUser ? contextPrefix + m.text : m.text;
+        if (textContent) content.push({ type: 'text', text: textContent });
+        apiMessages.push({ role: m.role, content: content.length === 1 && content[0].type === 'text' ? content[0].text : content });
+      });
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514', max_tokens: 2000,
+          system: `あなたは経験豊富な仮想通貨先物トレードのコーチです。データに基づいた具体的な指摘をし、日本語で端的に回答してください。`,
+          messages: apiMessages,
+        }),
+      });
+
+      if (!response.ok) throw new Error(`API エラー (${response.status})`);
+      const data = await response.json();
+      let responseText = '';
+      if (Array.isArray(data.content)) responseText = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+      else if (typeof data.content === 'string') responseText = data.content;
+      if (!responseText) throw new Error('応答が空でした');
+      setMessages([...newMessages, { role: 'assistant', text: responseText }]);
+    } catch (e) {
+      console.error(e);
+      setError(e.message);
+    } finally { setLoading(false); }
+  };
+
+  const saveApiKey = (key) => {
+    setApiKey(key);
+    storage.set('apiKey', key);
+    setShowKeyInput(false);
+  };
+
+  const presetQuestions = ['直近の傾向を分析して', '勝率改善のアドバイス', '悪い癖は?', '時間帯の分析'];
+
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 flex flex-col" style={{ height: 'calc(100vh - 180px)', minHeight: '400px' }}>
+      <div className="p-3 border-b border-zinc-800 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Icon name="message" size={13} className="text-emerald-400" />
+          <div>
+            <div className="text-[10px] tracking-widest text-zinc-300">AI COACH</div>
+            <div className="text-[9px] text-zinc-500">トレード振り返り・質問</div>
+          </div>
+        </div>
+        <div className="flex gap-2 items-center">
+          {messages.length > 0 && <button onClick={() => { setMessages([]); setError(''); }} className="text-[9px] text-zinc-500">クリア</button>}
+          <button onClick={() => setShowKeyInput(true)} className="text-[9px] text-zinc-500 flex items-center gap-1">
+            <Icon name="settings" size={10} />
+            {apiKey ? 'キー設定済' : 'APIキー'}
+          </button>
+        </div>
+      </div>
+
+      {showKeyInput && (
+        <div className="p-3 border-b border-zinc-800 bg-zinc-950">
+          <div className="text-[10px] text-zinc-400 mb-2">Anthropic APIキー (端末に保存されます)</div>
+          <div className="flex gap-2">
+            <input type="password" value={apiKey} onChange={e => setApiKey(e.target.value)}
+              placeholder="sk-ant-..." className="flex-1 bg-zinc-900 border border-zinc-800 px-2 py-1.5 text-[11px] text-zinc-100 focus:border-emerald-500 outline-none" />
+            <button onClick={() => saveApiKey(apiKey)} className="px-3 py-1.5 bg-emerald-500 text-zinc-950 text-[10px] font-bold">保存</button>
+            <button onClick={() => setShowKeyInput(false)} className="px-2 py-1.5 text-[10px] text-zinc-500">閉じる</button>
+          </div>
+          <div className="text-[9px] text-zinc-600 mt-1">キーはこの端末のlocalStorageにのみ保存されます</div>
+        </div>
+      )}
+
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-3">
+        {messages.length === 0 && (
+          <div className="text-center py-6">
+            <Icon name="message" size={28} className="mx-auto mb-3 text-zinc-700" />
+            <p className="text-[10px] text-zinc-500 mb-3">トレードデータをもとに質問できます</p>
+            <div className="flex flex-wrap gap-1.5 justify-center">
+              {presetQuestions.map(q => (
+                <button key={q} onClick={() => setInput(q)}
+                  className="text-[10px] px-2.5 py-1 border border-zinc-800 text-zinc-400 active:border-emerald-500">{q}</button>
+              ))}
+            </div>
+          </div>
+        )}
+        {messages.map((m, i) => (
+          <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[85%] ${m.role === 'user' ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-zinc-950 border border-zinc-800'} p-2.5`}>
+              {m.images && m.images.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {m.images.map((img, j) => <img key={j} src={img.preview} alt="" className="w-16 h-16 object-cover border border-zinc-800" />)}
+                </div>
+              )}
+              <div className={`text-[11px] leading-relaxed whitespace-pre-wrap ${m.role === 'user' ? 'text-zinc-100' : 'text-zinc-300'}`}>{m.text}</div>
+            </div>
+          </div>
+        ))}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-zinc-950 border border-zinc-800 p-2.5 flex items-center gap-2">
+              <Icon name="loader" size={12} className="text-emerald-400" />
+              <span className="text-[11px] text-zinc-400">分析中...</span>
+            </div>
+          </div>
+        )}
+        {error && <div className="bg-rose-500/10 border border-rose-500/30 p-2 text-[10px] text-rose-300">エラー: {error}</div>}
+      </div>
+
+      {attachedImages.length > 0 && (
+        <div className="px-3 py-1.5 border-t border-zinc-800 flex gap-1.5 flex-wrap">
+          {attachedImages.map((img, i) => (
+            <div key={i} className="relative">
+              <img src={img.preview} alt="" className="w-12 h-12 object-cover border border-zinc-800" />
+              <button onClick={() => setAttachedImages(attachedImages.filter((_, j) => j !== i))}
+                className="absolute -top-1 -right-1 bg-rose-500 text-zinc-950 rounded-full p-0.5"><Icon name="x" size={8}/></button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="p-2.5 border-t border-zinc-800 flex gap-1.5 items-end">
+        <button onClick={() => imageInputRef.current?.click()} className="p-1.5 border border-zinc-800 text-zinc-500" title="画像添付">
+          <Icon name="image" size={13} />
+        </button>
+        <input ref={imageInputRef} type="file" accept="image/*" multiple onChange={handleImageAttach} className="hidden" />
+        <textarea value={input} onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); sendMessage(); } }}
+          placeholder="質問を入力..."
+          rows={1} className="flex-1 bg-zinc-950 border border-zinc-800 px-2.5 py-1.5 text-[11px] text-zinc-100 focus:border-emerald-500 outline-none resize-none"
+          style={{ minHeight: '34px', maxHeight: '100px' }} />
+        <button onClick={sendMessage} disabled={loading || (!input.trim() && attachedImages.length === 0)}
+          className="p-1.5 bg-emerald-500 text-zinc-950 font-bold disabled:opacity-40 transition">
+          <Icon name="send" size={13} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============ Render ============
+ReactDOM.render(<TradingJournal />, document.getElementById('root'));
+</script>
+</body>
+</html>
