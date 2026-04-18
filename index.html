@@ -314,34 +314,6 @@ complete: (results) => {
         }).filter(t => t.entryPrice > 0);
         saveTrades([...trades, ...imported]);
         alert(`${imported.length}件のトレードをインポートしました`);
-            for (const k of keys) {
-              for (const rowKey of Object.keys(row)) {
-                if (rowKey.toLowerCase().replace(/\s/g, '').includes(k.toLowerCase().replace(/\s/g, ''))) return row[rowKey];
-              }
-            }
-            return '';
-          };
-          const symbol = getField(['symbol', 'シンボル', 'contract', '銘柄']);
-          const side = getField(['side', 'direction', '方向', 'type']);
-          const entry = parseFloat(getField(['open', 'entry', 'エントリー', '建値'])) || 0;
-          const exit = parseFloat(getField(['close', 'exit', 'クローズ', '決済'])) || 0;
-          const size = parseFloat(getField(['size', 'amount', '数量', 'volume'])) || 0;
-          const pnl = parseFloat(getField(['pnl', 'profit', '損益', 'realized'])) || 0;
-          const openTime = getField(['opentime', '開始時刻', 'opened', 'entry time']);
-          const closeTime = getField(['closetime', '終了時刻', 'closed', 'exit time', 'close time']);
-          const direction = side.toLowerCase().includes('short') || side.toLowerCase().includes('sell') ? 'short' : 'long';
-          return {
-            id: `t_csv_${Date.now()}_${idx}`,
-            symbol: symbol || 'UNKNOWN', direction,
-            entryPrice: entry, exitPrice: exit, size, pnl,
-            entryDate: openTime ? new Date(openTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
-            exitDate: closeTime ? new Date(closeTime).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
-            stopLoss: 0, takeProfit: 0, entryReason: '', exitReason: '', lesson: '',
-            tags: [], chartImages: [], source: 'bitget_csv',
-          };
-        }).filter(t => t.entryPrice > 0);
-        saveTrades([...trades, ...imported]);
-        alert(`${imported.length}件のトレードをインポートしました`);
       },
       error: (err) => alert('CSV読込エラー: ' + err.message),
     });
