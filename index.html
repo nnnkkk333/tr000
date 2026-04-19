@@ -134,6 +134,16 @@ const storage = {
 // ============ Main App ============
 const { useState, useEffect, useMemo, useRef, useCallback } = React;
 
+// USDT→JPY簡易換算（1 USDT ≈ 143円、固定レート）
+const usdt2jpy = (usdt) => {
+  const rate = 143;
+  const jpy = usdt * rate;
+  const abs = Math.abs(jpy);
+  const sign = jpy < 0 ? '-' : jpy > 0 ? '+' : '';
+  if (abs >= 10000) return sign + (abs / 10000).toFixed(1) + '万';
+  return sign + Math.round(abs).toLocaleString();
+};
+  
 function TradingJournal() {
   const [trades, setTrades] = useState([]);
   const [weeklyReviews, setWeeklyReviews] = useState([]);
@@ -811,12 +821,14 @@ function Dashboard({ stats, trades }) {
 
 function Kpi({ label, value, unit, highlight }) {
   const color = highlight === 'up' ? 'text-emerald-400' : highlight === 'down' ? 'text-rose-400' : 'text-zinc-100';
+  const showJpy = unit === 'USDT' && !isNaN(parseFloat(value));
   return (
     <div className="bg-zinc-950 p-3">
       <div className="text-[9px] text-zinc-500 tracking-[0.12em] mb-1">{label}</div>
       <div className={`text-lg font-bold tabular-nums ${color}`}>
         {value} {unit && <span className="text-[9px] text-zinc-500 font-normal ml-0.5">{unit}</span>}
       </div>
+      {showJpy && <div className="text-[9px] text-zinc-600 tabular-nums mt-0.5">¥{usdt2jpy(parseFloat(value))}</div>}
     </div>
   );
 }
@@ -832,42 +844,59 @@ function StatRow({ label, value, color }) {
 
 // ============ Trades List ============
 function TradesList({ trades, onSelect, onEdit, onDelete }) {
+  const [showAll, setShowAll] = useState(false);
   if (trades.length === 0) return <div className="text-center py-16 text-zinc-500 text-xs">該当なし</div>;
+  const displayed = showAll ? trades : trades.slice(0, 10);
   return (
-    <div className="space-y-1">
-      {trades.map(t => (
-        <div key={t.id} onClick={() => onSelect(t)}
-          className="border border-zinc-800 bg-zinc-900/20 p-3 flex items-center gap-3 active:bg-zinc-800/50 cursor-pointer">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold text-zinc-100">{t.symbol}</span>
-              <span className={`px-1 py-0.5 text-[9px] tracking-wider ${t.direction === 'long' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
-                {t.direction.toUpperCase()}
-              </span>
-              {t.leverage > 0 && <span className="text-[9px] text-zinc-600">{t.leverage}x</span>}
-              {(t.source === 'ocr' || t.source === 'bitget_text') && <Icon name="sparkles" size={10} className="text-emerald-500/60" />}
-            </div>
-            <div className="text-[10px] text-zinc-500 tabular-nums">
-              {(t.exitDate || t.entryDate).replace('T', ' ').slice(0, 16)}
-              {t.entryPrice > 0 && <span className="ml-2">{t.entryPrice.toLocaleString()} → {t.exitPrice > 0 ? t.exitPrice.toLocaleString() : '-'}</span>}
-            </div>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className={`text-sm font-bold tabular-nums ${t.pnl > 0 ? 'text-emerald-400' : t.pnl < 0 ? 'text-rose-400' : 'text-zinc-500'}`}>
-              {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
-            </div>
-            {t.roi !== undefined && t.roi !== 0 && (
-              <div className={`text-[9px] tabular-nums ${t.roi > 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>
-                {t.roi > 0 ? '+' : ''}{t.roi.toFixed(1)}%
+    <div>
+      <div className="space-y-1">
+        {displayed.map(t => (
+          <div key={t.id} onClick={() => onSelect(t)}
+            className="border border-zinc-800 bg-zinc-900/20 p-3 flex items-center gap-3 active:bg-zinc-800/50 cursor-pointer">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-bold text-zinc-100">{t.symbol}</span>
+                <span className={`px-1 py-0.5 text-[9px] tracking-wider ${t.direction === 'long' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                  {t.direction.toUpperCase()}
+                </span>
+                {t.leverage > 0 && <span className="text-[9px] text-zinc-600">{t.leverage}x</span>}
+                {(t.source === 'ocr' || t.source === 'bitget_text') && <Icon name="sparkles" size={10} className="text-emerald-500/60" />}
               </div>
-            )}
+              <div className="text-[10px] text-zinc-500 tabular-nums">
+                {(t.exitDate || t.entryDate).replace('T', ' ').slice(0, 16)}
+                {t.entryPrice > 0 && <span className="ml-2">{t.entryPrice.toLocaleString()} → {t.exitPrice > 0 ? t.exitPrice.toLocaleString() : '-'}</span>}
+              </div>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <div className={`text-sm font-bold tabular-nums ${t.pnl > 0 ? 'text-emerald-400' : t.pnl < 0 ? 'text-rose-400' : 'text-zinc-500'}`}>
+                {t.pnl > 0 ? '+' : ''}{t.pnl.toFixed(2)}
+              </div>
+              <div className="text-[8px] text-zinc-600 tabular-nums">¥{usdt2jpy(t.pnl)}</div>
+              {t.roi !== undefined && t.roi !== 0 && (
+                <div className={`text-[9px] tabular-nums ${t.roi > 0 ? 'text-emerald-400/70' : 'text-rose-400/70'}`}>
+                  {t.roi > 0 ? '+' : ''}{t.roi.toFixed(1)}%
+                </div>
+              )}
+            </div>
+            <div className="flex gap-1.5 flex-shrink-0" onClick={e => e.stopPropagation()}>
+              <button onClick={() => onEdit(t)} className="text-zinc-600 active:text-emerald-400 p-1"><Icon name="edit" size={13} /></button>
+              <button onClick={() => onDelete(t.id)} className="text-zinc-600 active:text-rose-400 p-1"><Icon name="trash" size={13} /></button>
+            </div>
           </div>
-          <div className="flex gap-1.5 flex-shrink-0" onClick={e => e.stopPropagation()}>
-            <button onClick={() => onEdit(t)} className="text-zinc-600 active:text-emerald-400 p-1"><Icon name="edit" size={13} /></button>
-            <button onClick={() => onDelete(t.id)} className="text-zinc-600 active:text-rose-400 p-1"><Icon name="trash" size={13} /></button>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      {!showAll && trades.length > 10 && (
+        <button onClick={() => setShowAll(true)}
+          className="w-full mt-2 py-2.5 border border-zinc-800 text-[10px] text-zinc-500 tracking-wider active:bg-zinc-900">
+          すべて表示（残り {trades.length - 10} 件）
+        </button>
+      )}
+      {showAll && trades.length > 10 && (
+        <button onClick={() => setShowAll(false)}
+          className="w-full mt-2 py-2.5 border border-zinc-800 text-[10px] text-zinc-500 tracking-wider active:bg-zinc-900">
+          折りたたむ
+        </button>
+      )}
     </div>
   );
 }
