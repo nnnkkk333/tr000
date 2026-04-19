@@ -448,7 +448,7 @@ complete: (results) => {
           ))}
         </div>
       </header>
-
+      <TradingRules trades={trades} />
       <main className="max-w-7xl mx-auto px-3 py-4 pb-8">
         {activeTab !== 'weekly' && activeTab !== 'coach' && (
           <div className="flex flex-wrap gap-2 mb-4 items-center">
@@ -1606,7 +1606,96 @@ function CoachView({ trades }) {
     </div>
   );
 }
+// ============ Trading Rules ============
+function TradingRules({ trades }) {
+  const [collapsed, setCollapsed] = useState(() => storage.get('rulesCollapsed') ?? false);
 
+  const toggleCollapsed = () => {
+    const next = !collapsed;
+    setCollapsed(next);
+    storage.set('rulesCollapsed', next);
+  };
+
+  // 今日のトレード数チェック
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTrades = trades.filter(t => (t.entryDate || '').slice(0, 10) === today || (t.exitDate || '').slice(0, 10) === today);
+  const todayCount = todayTrades.length;
+  const todayLongs = todayTrades.filter(t => t.direction === 'long').length;
+  const todayLosses = todayTrades.filter(t => t.pnl < 0);
+
+  // 連敗チェック（直近のトレードから）
+  const sorted = [...trades].filter(t => t.exitPrice > 0).sort((a, b) => new Date(b.exitDate) - new Date(a.exitDate));
+  let streak = 0;
+  for (const t of sorted) {
+    if (t.pnl < 0) streak++;
+    else break;
+  }
+
+  // 直近トレードの高レバチェック
+  const highLev = todayTrades.filter(t => (t.leverage || 0) > 30).length;
+
+  // 警告判定
+  const warnings = [];
+  if (todayCount >= 3) warnings.push({ level: 'danger', text: `本日 ${todayCount} トレード済み。上限3件です。これ以上入らないでください。` });
+  else if (todayCount === 2) warnings.push({ level: 'warn', text: `本日 ${todayCount} トレード済み。残り1件。本当に必要か考えてください。` });
+  if (todayLongs > 0) warnings.push({ level: 'danger', text: `本日ロングが ${todayLongs} 件あります。現在ロングは禁止ルールです。` });
+  if (streak >= 3) warnings.push({ level: 'danger', text: `現在 ${streak} 連敗中。今日はトレードを休んでください。` });
+  else if (streak >= 2) warnings.push({ level: 'warn', text: `${streak} 連敗中。次のサイズを半分にしてください。` });
+  if (highLev > 0) warnings.push({ level: 'warn', text: `30倍超のレバレッジが ${highLev} 件。ルールは30倍以下です。` });
+
+  const rules = [
+    { icon: '🚫', text: '1日最大3トレード。3敗で終了' },
+    { icon: '📉', text: 'ショートのみ（ロング禁止）' },
+    { icon: '⚖️', text: 'レバレッジ30倍以下' },
+    { icon: '⏳', text: 'エントリー前に1時間待つ' },
+    { icon: '🕐', text: '最低2時間は保持する' },
+    { icon: '📝', text: '根拠を書いてからエントリー' },
+    { icon: '📉', text: '2連敗後はサイズ半減' },
+  ];
+
+  return (
+    <div className="max-w-7xl mx-auto px-3 mt-2">
+      {/* 警告バナー（常時表示） */}
+      {warnings.map((w, i) => (
+        <div key={i} className={`mb-1.5 p-2.5 flex items-start gap-2 text-[11px] ${
+          w.level === 'danger'
+            ? 'bg-rose-500/15 border border-rose-500/40 text-rose-200'
+            : 'bg-amber-500/10 border border-amber-500/30 text-amber-200'
+        }`}>
+          <Icon name="alert-triangle" size={13} className={`flex-shrink-0 mt-0.5 ${w.level === 'danger' ? 'text-rose-400' : 'text-amber-400'}`} />
+          <div className="font-bold">{w.text}</div>
+        </div>
+      ))}
+
+      {/* ルールパネル（折りたたみ可能） */}
+      <div className="border border-zinc-800 bg-zinc-900/30 mb-2">
+        <button onClick={toggleCollapsed}
+          className="w-full px-3 py-2 flex items-center justify-between text-[10px] tracking-widest text-zinc-400">
+          <div className="flex items-center gap-2">
+            <span className="text-amber-400">⚡</span>
+            <span>MY TRADING RULES</span>
+            <span className="text-zinc-600">|</span>
+            <span className={`font-bold ${todayCount >= 3 ? 'text-rose-400' : todayCount >= 2 ? 'text-amber-400' : 'text-emerald-400'}`}>
+              本日 {todayCount}/3
+            </span>
+            {streak >= 2 && <span className="text-rose-400 font-bold">{streak}連敗中</span>}
+          </div>
+          <span className="text-zinc-600">{collapsed ? '▼' : '▲'}</span>
+        </button>
+        {!collapsed && (
+          <div className="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-1">
+            {rules.map((r, i) => (
+              <div key={i} className="flex items-center gap-2 text-[10px] text-zinc-400 py-0.5">
+                <span>{r.icon}</span>
+                <span>{r.text}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 // ============ Render ============
 ReactDOM.render(<TradingJournal />, document.getElementById('root'));
 </script>
