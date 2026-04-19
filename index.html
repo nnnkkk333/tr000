@@ -1153,6 +1153,8 @@ function AnalysisView({ trades }) {
       <StreakTracker trades={closedTrades} />
       <HoldTimeAnalysis trades={closedTrades} />
       <PriceRangeAnalysis trades={closedTrades} />
+      <RuleComplianceCheck trades={closedTrades} />
+      <MentalAnalysis trades={closedTrades} />
     </div>
   );
 }
@@ -1407,6 +1409,364 @@ function PriceRangeAnalysis({ trades }) {
     </div>
   );
 }
+
+// --- ルール遵守チェック ---
+function RuleComplianceCheck({ trades }) {
+  const analysis = useMemo(() => {
+    // エントリー根拠の記入率
+    const withReason = trades.filter(t => t.entryReason && t.entryReason.trim().length > 0);
+    const withoutReason = trades.filter(t => !t.entryReason || t.entryReason.trim().length === 0);
+    const reasonRate = trades.length > 0 ? (withReason.length / trades.length * 100) : 0;
+    const reasonWinRate = withReason.length > 0 ? (withReason.filter(t => t.pnl > 0).length / withReason.length * 100) : 0;
+    const noReasonWinRate = withoutReason.length > 0 ? (withoutReason.filter(t => t.pnl > 0).length / withoutReason.length * 100) : 0;
+
+    // レバレッジ違反（30倍超）
+    const withLev = trades.filter(t => t.leverage > 0);
+    const levViolation = withLev.filter(t => t.leverage > 30);
+    const levOk = withLev.filter(t => t.leverage <= 30);
+    const levViolationRate = withLev.length > 0 ? (levViolation.length / withLev.length * 100) : 0;
+    const levViolationWR = levViolation.length > 0 ? (levViolation.filter(t => t.pnl > 0).length / levViolation.length * 100) : 0;
+    const levOkWR = levOk.length > 0 ? (levOk.filter(t => t.pnl > 0).length / levOk.length * 100) : 0;
+
+    // 1日あたりのトレード数
+    const byDay = {};
+    trades.forEach(t => {
+      const day = (t.exitDate || t.entryDate || '').slice(0, 10);
+      if (!byDay[day]) byDay[day] = [];
+      byDay[day].push(t);
+    });
+    const overDays = Object.entries(byDay).filter(([, ts]) => ts.length > 3);
+    const okDays = Object.entries(byDay).filter(([, ts]) => ts.length <= 3 && ts.length > 0);
+    const overDayPnl = overDays.reduce((s, [, ts]) => s + ts.reduce((ss, t) => ss + t.pnl, 0), 0);
+    const okDayPnl = okDays.reduce((s, [, ts]) => s + ts.reduce((ss, t) => ss + t.pnl, 0), 0);
+    const overDayWR = (() => {
+      const all = overDays.flatMap(([, ts]) => ts);
+      return all.length > 0 ? (all.filter(t => t.pnl > 0).length / all.length * 100) : 0;
+    })();
+    const okDayWR = (() => {
+      const all = okDays.flatMap(([, ts]) => ts);
+      return all.length > 0 ? (all.filter(t => t.pnl > 0).length / all.length * 100) : 0;
+    })();
+
+    // ロング vs ショート
+    const longs = trades.filter(t => t.direction === 'long');
+    const shorts = trades.filter(t => t.direction === 'short');
+    const longWR = longs.length > 0 ? (longs.filter(t => t.pnl > 0).length / longs.length * 100) : 0;
+    const shortWR = shorts.length > 0 ? (shorts.filter(t => t.pnl > 0).length / shorts.length * 100) : 0;
+    const longPnl = longs.reduce((s, t) => s + t.pnl, 0);
+    const shortPnl = shorts.reduce((s, t) => s + t.pnl, 0);
+
+    return {
+      reasonRate, withReason: withReason.length, withoutReason: withoutReason.length,
+      reasonWinRate, noReasonWinRate,
+      levViolationRate, levViolation: levViolation.length, levOk: levOk.length, withLev: withLev.length,
+      levViolationWR, levOkWR,
+      totalDays: Object.keys(byDay).length, overDays: overDays.length, okDays: okDays.length,
+      overDayPnl, okDayPnl, overDayWR, okDayWR,
+      longs: longs.length, shorts: shorts.length, longWR, shortWR, longPnl, shortPnl,
+    };
+  }, [trades]);
+
+  const items = [
+    {
+      label: 'エントリー根拠の記入',
+      rate: analysis.reasonRate,
+      good: `記入あり: ${analysis.withReason}件 / 勝率${analysis.reasonWinRate.toFixed(0)}%`,
+      bad: `記入なし: ${analysis.withoutReason}件 / 勝率${analysis.noReasonWinRate.toFixed(0)}%`,
+      verdict: analysis.withReason > 0 && analysis.withoutReason > 0
+        ? (analysis.reasonWinRate > analysis.noReasonWinRate ? 'positive' : 'negative')
+        : 'neutral',
+      insight: analysis.withReason > 0 && analysis.withoutReason > 0
+        ? (analysis.reasonWinRate > analysis.noReasonWinRate
+          ? `根拠ありは勝率が${(analysis.reasonWinRate - analysis.noReasonWinRate).toFixed(0)}%高い`
+          : '根拠の質を見直す必要あり')
+        : '根拠を記入してデータを蓄積しましょう',
+    },
+    {
+      label: 'レバレッジ（30倍ルール）',
+      rate: analysis.withLev > 0 ? (100 - analysis.levViolationRate) : 100,
+      good: `30倍以下: ${analysis.levOk}件 / 勝率${analysis.levOkWR.toFixed(0)}%`,
+      bad: `30倍超: ${analysis.levViolation}件 / 勝率${analysis.levViolationWR.toFixed(0)}%`,
+      verdict: analysis.levViolation > 0 ? 'negative' : 'positive',
+      insight: analysis.levViolation > 0
+        ? `高レバ${analysis.levViolation}件で勝率${analysis.levViolationWR.toFixed(0)}%。ルールを守りましょう`
+        : 'レバレッジルール遵守 ✓',
+    },
+    {
+      label: '1日3トレード制限',
+      rate: analysis.totalDays > 0 ? (analysis.okDays / analysis.totalDays * 100) : 100,
+      good: `3件以内の日: ${analysis.okDays}日 / 勝率${analysis.okDayWR.toFixed(0)}% / ${analysis.okDayPnl > 0 ? '+' : ''}${analysis.okDayPnl.toFixed(0)}`,
+      bad: `4件以上の日: ${analysis.overDays}日 / 勝率${analysis.overDayWR.toFixed(0)}% / ${analysis.overDayPnl > 0 ? '+' : ''}${analysis.overDayPnl.toFixed(0)}`,
+      verdict: analysis.overDays > 0 && analysis.overDayPnl < analysis.okDayPnl ? 'negative' : (analysis.overDays === 0 ? 'positive' : 'neutral'),
+      insight: analysis.overDays > 0
+        ? `制限超過日の損益: ${analysis.overDayPnl.toFixed(0)} USDT`
+        : 'トレード数ルール遵守 ✓',
+    },
+    {
+      label: '方向（ショート推奨）',
+      rate: trades.length > 0 ? (analysis.shorts / trades.length * 100) : 0,
+      good: `ショート: ${analysis.shorts}件 / 勝率${analysis.shortWR.toFixed(0)}% / ${analysis.shortPnl > 0 ? '+' : ''}${analysis.shortPnl.toFixed(0)}`,
+      bad: `ロング: ${analysis.longs}件 / 勝率${analysis.longWR.toFixed(0)}% / ${analysis.longPnl > 0 ? '+' : ''}${analysis.longPnl.toFixed(0)}`,
+      verdict: analysis.longs > 0 && analysis.longWR < analysis.shortWR ? 'negative' : 'positive',
+      insight: analysis.longs > 0 && analysis.shortWR > analysis.longWR
+        ? `ショートが勝率${(analysis.shortWR - analysis.longWR).toFixed(0)}%高い。ロングは控えて`
+        : '',
+    },
+  ];
+
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4">
+      <h3 className="text-[10px] tracking-widest text-zinc-400 mb-4">ルール遵守チェック</h3>
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <div key={i}>
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="text-[11px] text-zinc-300 font-bold">{item.label}</div>
+              <div className={`text-[11px] font-bold tabular-nums ${
+                item.rate >= 80 ? 'text-emerald-400' : item.rate >= 50 ? 'text-amber-400' : 'text-rose-400'
+              }`}>{item.rate.toFixed(0)}%</div>
+            </div>
+            <div className="h-1.5 bg-zinc-800 mb-2 overflow-hidden">
+              <div className={`h-full ${item.rate >= 80 ? 'bg-emerald-500' : item.rate >= 50 ? 'bg-amber-500' : 'bg-rose-500'}`}
+                style={{ width: `${item.rate}%` }} />
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-[9px] mb-1">
+              <div className="text-emerald-400/80">{item.good}</div>
+              <div className="text-rose-400/80">{item.bad}</div>
+            </div>
+            {item.insight && (
+              <div className={`text-[9px] mt-1 ${
+                item.verdict === 'positive' ? 'text-emerald-400/60' : item.verdict === 'negative' ? 'text-amber-400' : 'text-zinc-500'
+              }`}>→ {item.insight}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// --- メンタル・感情分析 ---
+function MentalAnalysis({ trades }) {
+  const sorted = useMemo(() => [...trades].sort((a, b) => new Date(a.exitDate) - new Date(b.exitDate)), [trades]);
+
+  const analysis = useMemo(() => {
+    // 1. 連敗後のエントリー間隔
+    const afterLossIntervals = [];
+    const afterLossResults = { rush: { count: 0, wins: 0, pnl: 0 }, wait: { count: 0, wins: 0, pnl: 0 } };
+
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i - 1].pnl < 0) {
+        const prevExit = new Date(sorted[i - 1].exitDate);
+        const nextEntry = new Date(sorted[i].entryDate);
+        const intervalMin = (nextEntry - prevExit) / 60000;
+        if (!isNaN(intervalMin) && intervalMin >= 0) {
+          afterLossIntervals.push({ interval: intervalMin, pnl: sorted[i].pnl, win: sorted[i].pnl > 0 });
+          const bucket = intervalMin < 30 ? 'rush' : 'wait';
+          afterLossResults[bucket].count += 1;
+          if (sorted[i].pnl > 0) afterLossResults[bucket].wins += 1;
+          afterLossResults[bucket].pnl += sorted[i].pnl;
+        }
+      }
+    }
+
+    // 2. 大負け後の翌日行動
+    const byDay = {};
+    sorted.forEach(t => {
+      const day = (t.exitDate || t.entryDate || '').slice(0, 10);
+      if (!byDay[day]) byDay[day] = { trades: [], pnl: 0 };
+      byDay[day].trades.push(t);
+      byDay[day].pnl += t.pnl;
+    });
+
+    const dayKeys = Object.keys(byDay).sort();
+    const afterBigLoss = { count: 0, totalTrades: 0, wins: 0, pnl: 0 };
+    const afterNormalDay = { count: 0, totalTrades: 0, wins: 0, pnl: 0 };
+
+    for (let i = 1; i < dayKeys.length; i++) {
+      const prevDay = byDay[dayKeys[i - 1]];
+      const thisDay = byDay[dayKeys[i]];
+      const isBigLoss = prevDay.pnl < -20;
+
+      const bucket = isBigLoss ? afterBigLoss : afterNormalDay;
+      bucket.count += 1;
+      bucket.totalTrades += thisDay.trades.length;
+      bucket.wins += thisDay.trades.filter(t => t.pnl > 0).length;
+      bucket.pnl += thisDay.pnl;
+    }
+
+    // 3. 時間帯×曜日ヒートマップ
+    const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    const heatmap = Array.from({ length: 7 }, () => Array.from({ length: 6 }, () => ({ count: 0, wins: 0, pnl: 0 })));
+    // 時間帯を4時間ブロックに: 0-3, 4-7, 8-11, 12-15, 16-19, 20-23
+    sorted.forEach(t => {
+      const d = new Date(t.entryDate || t.exitDate);
+      const day = d.getDay();
+      const hourBlock = Math.floor(d.getHours() / 4);
+      if (!isNaN(day) && !isNaN(hourBlock)) {
+        heatmap[day][hourBlock].count += 1;
+        if (t.pnl > 0) heatmap[day][hourBlock].wins += 1;
+        heatmap[day][hourBlock].pnl += t.pnl;
+      }
+    });
+
+    // 4. ポジションサイズの一貫性（連敗後にサイズが変わるか）
+    const sizeAfterLoss = [];
+    const sizeAfterWin = [];
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i].size > 0 && sorted[i - 1].size > 0) {
+        const ratio = sorted[i].size / sorted[i - 1].size;
+        if (sorted[i - 1].pnl < 0) sizeAfterLoss.push(ratio);
+        else sizeAfterWin.push(ratio);
+      }
+    }
+    const avgSizeAfterLoss = sizeAfterLoss.length > 0 ? sizeAfterLoss.reduce((s, r) => s + r, 0) / sizeAfterLoss.length : 1;
+    const avgSizeAfterWin = sizeAfterWin.length > 0 ? sizeAfterWin.reduce((s, r) => s + r, 0) / sizeAfterWin.length : 1;
+
+    return { afterLossResults, afterBigLoss, afterNormalDay, heatmap, dayNames, avgSizeAfterLoss, avgSizeAfterWin };
+  }, [sorted]);
+
+  const timeLabels = ['0-3', '4-7', '8-11', '12-15', '16-19', '20-23'];
+
+  return (
+    <div className="border border-zinc-800 bg-zinc-900/30 p-4 space-y-5">
+      <h3 className="text-[10px] tracking-widest text-zinc-400">メンタル・感情分析</h3>
+
+      {/* 負け後の行動 */}
+      <div>
+        <div className="text-[10px] text-zinc-300 font-bold mb-2">負けた後の行動パターン</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-rose-400 tracking-wider mb-1">30分以内に再エントリー</div>
+            <div className="text-base font-bold tabular-nums text-rose-400">{analysis.afterLossResults.rush.count}件</div>
+            <div className="text-[9px] text-zinc-500 mt-0.5">
+              勝率: {analysis.afterLossResults.rush.count > 0 ? (analysis.afterLossResults.rush.wins / analysis.afterLossResults.rush.count * 100).toFixed(0) : '-'}%
+            </div>
+            <div className="text-[9px] text-zinc-500">
+              損益: {analysis.afterLossResults.rush.pnl > 0 ? '+' : ''}{analysis.afterLossResults.rush.pnl.toFixed(1)}
+            </div>
+          </div>
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-emerald-400 tracking-wider mb-1">30分以上待ってからエントリー</div>
+            <div className="text-base font-bold tabular-nums text-emerald-400">{analysis.afterLossResults.wait.count}件</div>
+            <div className="text-[9px] text-zinc-500 mt-0.5">
+              勝率: {analysis.afterLossResults.wait.count > 0 ? (analysis.afterLossResults.wait.wins / analysis.afterLossResults.wait.count * 100).toFixed(0) : '-'}%
+            </div>
+            <div className="text-[9px] text-zinc-500">
+              損益: {analysis.afterLossResults.wait.pnl > 0 ? '+' : ''}{analysis.afterLossResults.wait.pnl.toFixed(1)}
+            </div>
+          </div>
+        </div>
+        {analysis.afterLossResults.rush.count > 0 && analysis.afterLossResults.wait.count > 0 && (
+          <div className={`text-[9px] mt-2 ${
+            analysis.afterLossResults.rush.pnl < analysis.afterLossResults.wait.pnl ? 'text-amber-400' : 'text-emerald-400/60'
+          }`}>
+            → {analysis.afterLossResults.rush.pnl < analysis.afterLossResults.wait.pnl
+              ? '負けた直後のリベンジトレードは成績が悪い。最低30分は待ちましょう'
+              : '待ち時間による差は少ない。別の要因を確認しましょう'}
+          </div>
+        )}
+      </div>
+
+      {/* 大負け後の翌日 */}
+      <div>
+        <div className="text-[10px] text-zinc-300 font-bold mb-2">大負け（-20 USDT超）の翌日</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-rose-400 tracking-wider mb-1">大負け翌日</div>
+            <div className="text-[9px] text-zinc-500">
+              {analysis.afterBigLoss.count}日 / 平均{analysis.afterBigLoss.count > 0 ? (analysis.afterBigLoss.totalTrades / analysis.afterBigLoss.count).toFixed(1) : 0}件/日
+            </div>
+            <div className="text-[9px] text-zinc-500">
+              勝率: {analysis.afterBigLoss.totalTrades > 0 ? (analysis.afterBigLoss.wins / analysis.afterBigLoss.totalTrades * 100).toFixed(0) : '-'}%
+            </div>
+            <div className={`text-[10px] font-bold tabular-nums ${analysis.afterBigLoss.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {analysis.afterBigLoss.pnl > 0 ? '+' : ''}{analysis.afterBigLoss.pnl.toFixed(1)}
+            </div>
+          </div>
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-emerald-400 tracking-wider mb-1">通常日の翌日</div>
+            <div className="text-[9px] text-zinc-500">
+              {analysis.afterNormalDay.count}日 / 平均{analysis.afterNormalDay.count > 0 ? (analysis.afterNormalDay.totalTrades / analysis.afterNormalDay.count).toFixed(1) : 0}件/日
+            </div>
+            <div className="text-[9px] text-zinc-500">
+              勝率: {analysis.afterNormalDay.totalTrades > 0 ? (analysis.afterNormalDay.wins / analysis.afterNormalDay.totalTrades * 100).toFixed(0) : '-'}%
+            </div>
+            <div className={`text-[10px] font-bold tabular-nums ${analysis.afterNormalDay.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {analysis.afterNormalDay.pnl > 0 ? '+' : ''}{analysis.afterNormalDay.pnl.toFixed(1)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 曜日×時間帯ヒートマップ */}
+      <div>
+        <div className="text-[10px] text-zinc-300 font-bold mb-2">曜日×時間帯ヒートマップ（勝率）</div>
+        <div className="overflow-x-auto">
+          <div style={{ minWidth: '320px' }}>
+            <div className="grid gap-0.5" style={{ gridTemplateColumns: 'auto repeat(6, 1fr)' }}>
+              <div></div>
+              {timeLabels.map(l => <div key={l} className="text-[8px] text-zinc-500 text-center">{l}</div>)}
+              {analysis.dayNames.map((dayName, dayIdx) => (
+                <React.Fragment key={dayIdx}>
+                  <div className="text-[9px] text-zinc-500 pr-1 flex items-center">{dayName}</div>
+                  {analysis.heatmap[dayIdx].map((cell, hourIdx) => {
+                    const wr = cell.count > 0 ? (cell.wins / cell.count * 100) : -1;
+                    const bg = wr < 0 ? 'rgba(39,39,42,0.3)'
+                      : wr >= 60 ? `rgba(52,211,153,${Math.min(0.8, 0.3 + wr / 200)})`
+                      : wr >= 40 ? `rgba(113,113,122,0.3)`
+                      : `rgba(248,113,113,${Math.min(0.8, 0.3 + (100 - wr) / 200)})`;
+                    return (
+                      <div key={hourIdx} className="aspect-square border border-zinc-800 flex flex-col items-center justify-center text-[7px]"
+                        style={{ backgroundColor: bg }}
+                        title={`${dayName} ${timeLabels[hourIdx]}時: ${cell.count}件 / 勝率${wr >= 0 ? wr.toFixed(0) : '-'}%`}>
+                        {cell.count > 0 && <>
+                          <div className="text-zinc-200 font-bold">{wr.toFixed(0)}%</div>
+                          <div className="text-zinc-400">{cell.count}</div>
+                        </>}
+                      </div>
+                    );
+                  })}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3 mt-1.5 text-[8px] text-zinc-500">
+          <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-500/60"></span>勝率60%+</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 bg-zinc-500/30"></span>40-60%</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 bg-rose-500/60"></span>40%未満</span>
+        </div>
+      </div>
+
+      {/* サイズ変動 */}
+      <div>
+        <div className="text-[10px] text-zinc-300 font-bold mb-2">連敗後のポジションサイズ変動</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-zinc-500 tracking-wider mb-1">負けた後のサイズ変化</div>
+            <div className={`text-base font-bold tabular-nums ${analysis.avgSizeAfterLoss > 1.1 ? 'text-rose-400' : analysis.avgSizeAfterLoss < 0.9 ? 'text-emerald-400' : 'text-zinc-100'}`}>
+              ×{analysis.avgSizeAfterLoss.toFixed(2)}
+            </div>
+            <div className="text-[8px] text-zinc-500 mt-0.5">
+              {analysis.avgSizeAfterLoss > 1.1 ? 'サイズ増加 → リベンジの兆候' : analysis.avgSizeAfterLoss < 0.9 ? 'サイズ減少 → 良い対応' : 'ほぼ一定'}
+            </div>
+          </div>
+          <div className="bg-zinc-950/50 p-2.5">
+            <div className="text-[9px] text-zinc-500 tracking-wider mb-1">勝った後のサイズ変化</div>
+            <div className={`text-base font-bold tabular-nums ${analysis.avgSizeAfterWin > 1.2 ? 'text-amber-400' : 'text-zinc-100'}`}>
+              ×{analysis.avgSizeAfterWin.toFixed(2)}
+            </div>
+            <div className="text-[8px] text-zinc-500 mt-0.5">
+              {analysis.avgSizeAfterWin > 1.2 ? '過信によるサイズ増加に注意' : 'ほぼ一定'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 // ============ Coach View (AI Chat) ============
 function CoachView({ trades }) {
